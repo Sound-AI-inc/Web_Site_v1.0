@@ -89,12 +89,16 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-gray-200 dark:border-white/5">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-md bg-gradient-to-br from-accent-pink to-accent-cyan flex items-center justify-center">
-              <span className="text-white font-poppins font-bold text-xs">S</span>
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200 bg-white p-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-white/10">
+              <img
+                src="/logo SoundAI v1.5 (1).svg"
+                alt="SoundAI"
+                className="h-full w-full object-contain"
+              />
             </div>
             <span className="font-poppins font-semibold text-sm text-gray-900 dark:text-light-bg">SoundAI</span>
             <span className="text-gray-300 dark:text-light-bg/30 text-xs">|</span>
-            <span className="text-gray-400 dark:text-light-bg/40 text-xs italic">Future-Forward Innovation</span>
+            <span className="text-gray-400 dark:text-light-bg/40 text-xs italic">Modular audio intelligence</span>
           </div>
 
           <div className="flex items-center gap-4">

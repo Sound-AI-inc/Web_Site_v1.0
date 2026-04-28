@@ -11,6 +11,8 @@ import {
   Terminal,
   Users,
   Globe,
+  Cpu,
+  Boxes,
 } from "lucide-react";
 import SectionHeading from "../components/SectionHeading";
 
@@ -33,17 +35,17 @@ const features = [
   {
     icon: FileAudio,
     title: "Multi-Format Sync",
-    desc: "Audio, MIDI, presets, and metadata — synchronized from a single prompt.",
+    desc: "Audio, MIDI, presets, and metadata synchronized from a single prompt.",
   },
   {
     icon: Zap,
     title: "One-Click DAW Export",
-    desc: "Export directly to Ableton, FL Studio, Logic Pro — no conversion needed.",
+    desc: "Export directly to Ableton, FL Studio, Logic Pro without conversion steps.",
   },
   {
     icon: Shield,
     title: "Rights-Aware Outputs",
-    desc: "Every asset generated with compliance metadata and clear usage rights.",
+    desc: "Every asset includes compliance metadata and clearer usage provenance.",
   },
 ];
 
@@ -57,13 +59,13 @@ const useCases = [
   {
     icon: Terminal,
     title: "For Developers",
-    desc: "Integrate AI audio generation into your apps, games, and platforms via our API.",
+    desc: "Integrate AI audio generation into your apps, games, and platforms via the API.",
     to: "/products/developers",
   },
   {
     icon: Globe,
     title: "For Partners",
-    desc: "Join our ecosystem of DAW makers, plugin developers, and music institutions.",
+    desc: "Join the ecosystem of DAW makers, plugin developers, and audio institutions.",
     to: "/products/partnerships",
   },
 ];
@@ -71,118 +73,181 @@ const useCases = [
 export default function Home() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative min-h-screen flex items-center waveform-bg overflow-hidden">
-        {/* Gradient orbs */}
-        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-accent-pink/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent-cyan/15 rounded-full blur-3xl" />
+      <section className="relative flex min-h-screen items-center overflow-hidden waveform-bg">
+        <div className="tech-grid absolute inset-0 opacity-50" />
+        <div className="absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-accent-pink/20 blur-3xl" />
+        <div className="absolute -right-32 bottom-1/4 h-96 w-96 rounded-full bg-accent-cyan/15 blur-3xl" />
+        <div className="signal-line absolute left-[8%] top-[22%] h-px w-[42%] opacity-70" />
+        <div className="signal-line absolute right-[10%] top-[58%] h-px w-[34%] opacity-60" />
 
         <div className="container-max section-padding relative z-10">
-          <div className="max-w-4xl">
-            <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase rounded-full bg-accent-pink/10 text-accent-pink border border-accent-pink/20 mb-6">
-              AI-Powered Music Production
-            </span>
-            <h1 className="font-poppins font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
-              Create Production-Ready
-              <br />
-              Audio with{" "}
-              <span className="gradient-text">AI</span>
-            </h1>
-            <p className="text-gray-500 dark:text-light-bg/60 text-lg md:text-xl max-w-2xl mb-8 leading-relaxed">
-              From Prompt to Samples, MIDI &amp; Presets — Built for Real Workflows.
-              Generate modular, editable production assets designed for professional DAWs.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/products/users" className="btn-primary text-base px-8 py-4">
-                Start Creating
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-              <Link to="/about" className="btn-secondary text-base px-8 py-4">
-                Join Beta
-              </Link>
-            </div>
-          </div>
-
-          {/* Prompt → Output Diagram */}
-          <div className="mt-16 md:mt-24">
-            <div className="relative bg-gray-100 dark:bg-dark-bg/40 backdrop-blur border border-gray-200 dark:border-white/5 rounded-2xl p-6 md:p-10 max-w-3xl">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-accent-pink/60" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
-                <div className="w-3 h-3 rounded-full bg-green-400/60" />
+          <div className="grid items-start gap-10 lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="max-w-4xl">
+              <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-pink/20 bg-accent-pink/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-pink">
+                AI-Powered Music Production
+              </span>
+              <h1 className="mb-6 font-poppins text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
+                Build audio assets
+                <br />
+                like a <span className="gradient-text">technology platform</span>
+              </h1>
+              <p className="mb-8 max-w-2xl text-lg leading-relaxed text-gray-500 dark:text-light-bg/60 md:text-xl">
+                Prompt once and generate synchronized samples, MIDI, presets, and metadata.
+                SoundAI is built for professional DAW workflows, product teams, and audio-native startups.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link to="/products/users" className="btn-primary px-8 py-4 text-base">
+                  Start Creating
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+                <Link to="/about" className="btn-secondary px-8 py-4 text-base">
+                  Join Beta
+                </Link>
               </div>
-              <div className="font-mono text-sm text-gray-500 dark:text-light-bg/50 mb-3">$ soundai generate</div>
-              <div className="bg-gray-50 dark:bg-dark-deeper/60 rounded-lg p-4 mb-4 border border-gray-200 dark:border-white/5">
-                <p className="text-accent-cyan font-mono text-sm">
-                  &gt; "Dark ambient pad, 120 BPM, A minor, with analog warmth"
-                </p>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-3">
                 {[
-                  { label: "Audio Sample", ext: ".wav" },
-                  { label: "MIDI Pattern", ext: ".mid" },
-                  { label: "VST Preset", ext: ".fxp" },
-                  { label: "Metadata", ext: ".json" },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="bg-gray-100 dark:bg-dark-bg/60 border border-accent-pink/10 rounded-lg p-3 text-center"
-                  >
-                    <Layers className="w-5 h-5 text-accent-pink mx-auto mb-2" />
-                    <p className="text-xs font-semibold text-gray-900 dark:text-light-bg">{item.label}</p>
-                    <p className="text-xs text-gray-400 dark:text-light-bg/40 font-mono">{item.ext}</p>
+                  { label: "Formats", value: "Audio · MIDI · Presets" },
+                  { label: "Output", value: "DAW-ready modular assets" },
+                  { label: "Surface", value: "API + Interface + Metadata" },
+                ].map((stat) => (
+                  <div key={stat.label} className="tech-shell px-4 py-4">
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-light-bg/35">
+                      {stat.label}
+                    </div>
+                    <div className="mt-2 text-sm font-semibold text-gray-900 dark:text-light-bg">
+                      {stat.value}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
+
+            <div className="tech-shell p-5 md:p-6">
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-pink">
+                    Live generation flow
+                  </div>
+                  <div className="mt-2 font-poppins text-xl font-semibold text-gray-900 dark:text-light-bg">
+                    Prompt to Metadata to Model to Outputs
+                  </div>
+                </div>
+                <div className="rounded-full border border-accent-cyan/20 bg-accent-cyan/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-cyan">
+                  Multi-surface
+                </div>
+              </div>
+
+              <div className="rounded-[22px] border border-gray-200/80 bg-[linear-gradient(180deg,rgba(248,250,252,0.88),rgba(255,255,255,0.96))] p-5 dark:border-white/10 dark:bg-dark-deeper/70">
+                <div className="mb-4 flex items-center gap-2">
+                  <div className="h-3 w-3 rounded-full bg-accent-pink/60" />
+                  <div className="h-3 w-3 rounded-full bg-yellow-400/60" />
+                  <div className="h-3 w-3 rounded-full bg-green-400/60" />
+                </div>
+                <div className="mb-3 font-mono text-sm text-gray-500 dark:text-light-bg/50">$ soundai generate</div>
+                <div className="mb-5 rounded-xl border border-gray-200 bg-white/88 p-4 dark:border-white/10 dark:bg-dark-bg/50">
+                  <p className="font-mono text-sm text-accent-cyan">
+                    &gt; "Dark ambient pad, 120 BPM, A minor, with analog warmth"
+                  </p>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {[
+                    {
+                      icon: Boxes,
+                      label: "Routing layer",
+                      desc: "Metadata selects compatible model, format, and output contract.",
+                    },
+                    {
+                      icon: Cpu,
+                      label: "Model execution",
+                      desc: "Audio, MIDI, and preset models run against the same prompt context.",
+                    },
+                    {
+                      icon: Layers,
+                      label: "Structured outputs",
+                      desc: "Waveforms, note events, patch parameters, and metadata stay synchronized.",
+                    },
+                    {
+                      icon: Terminal,
+                      label: "Production handoff",
+                      desc: "Assets are ready for export, editing, and API delivery.",
+                    },
+                  ].map((item) => (
+                    <div key={item.label} className="rounded-2xl border border-gray-200/80 bg-white/72 p-4 dark:border-white/10 dark:bg-dark-bg/45">
+                      <div className="mb-2 flex items-center gap-2">
+                        <item.icon className="h-4 w-4 text-accent-pink" />
+                        <p className="text-sm font-semibold text-gray-900 dark:text-light-bg">{item.label}</p>
+                      </div>
+                      <p className="text-sm leading-6 text-gray-500 dark:text-light-bg/55">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+                  {[
+                    { label: "Audio Sample", ext: ".wav" },
+                    { label: "MIDI Pattern", ext: ".mid" },
+                    { label: "VST Preset", ext: ".fxp" },
+                    { label: "Metadata", ext: ".json" },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-xl border border-accent-pink/10 bg-gray-50/90 p-3 text-center dark:bg-dark-bg/60"
+                    >
+                      <Layers className="mx-auto mb-2 h-5 w-5 text-accent-pink" />
+                      <p className="text-xs font-semibold text-gray-900 dark:text-light-bg">{item.label}</p>
+                      <p className="font-mono text-xs text-gray-400 dark:text-light-bg/40">{item.ext}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
       <section className="section-padding waveform-bg">
         <div className="container-max">
           <SectionHeading
             badge="Capabilities"
-            title="Modular AI for Real Production"
-            subtitle="Every asset is editable, exportable, and designed to integrate seamlessly into professional workflows."
+            title="Modular AI for real production"
+            subtitle="Every asset is editable, exportable, and designed to integrate into professional workflows."
           />
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((f) => (
-              <div key={f.title} className="card group">
-                <div className="w-10 h-10 rounded-lg bg-accent-pink/10 flex items-center justify-center mb-4 group-hover:bg-accent-pink/20 transition-colors">
-                  <f.icon className="w-5 h-5 text-accent-pink" />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature) => (
+              <div key={feature.title} className="card group">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-accent-pink/10 transition-colors group-hover:bg-accent-pink/20">
+                  <feature.icon className="h-5 w-5 text-accent-pink" />
                 </div>
-                <h3 className="font-poppins font-semibold text-lg mb-2">{f.title}</h3>
-                <p className="text-gray-500 dark:text-light-bg/50 text-sm leading-relaxed">{f.desc}</p>
+                <h3 className="mb-2 font-poppins text-lg font-semibold">{feature.title}</h3>
+                <p className="text-sm leading-relaxed text-gray-500 dark:text-light-bg/50">{feature.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Use Cases */}
       <section className="section-padding">
         <div className="container-max">
           <SectionHeading
             badge="Use Cases"
-            title="Built for Every Workflow"
+            title="Built for every workflow"
             subtitle="Whether you're a solo producer, a development team, or an enterprise partner."
           />
-          <div className="grid md:grid-cols-3 gap-6">
-            {useCases.map((uc) => (
+          <div className="grid gap-6 md:grid-cols-3">
+            {useCases.map((useCase) => (
               <Link
-                key={uc.title}
-                to={uc.to}
+                key={useCase.title}
+                to={useCase.to}
                 className="card group flex flex-col hover:border-accent-cyan/20"
               >
-                <div className="w-12 h-12 rounded-xl bg-accent-cyan/10 flex items-center justify-center mb-4 group-hover:bg-accent-cyan/20 transition-colors">
-                  <uc.icon className="w-6 h-6 text-accent-cyan" />
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent-cyan/10 transition-colors group-hover:bg-accent-cyan/20">
+                  <useCase.icon className="h-6 w-6 text-accent-cyan" />
                 </div>
-                <h3 className="font-poppins font-semibold text-xl mb-2">{uc.title}</h3>
-                <p className="text-gray-500 dark:text-light-bg/50 text-sm leading-relaxed flex-1">{uc.desc}</p>
-                <div className="mt-4 flex items-center gap-1 text-accent-pink text-sm font-semibold">
-                  Learn More <ArrowRight className="w-4 h-4" />
+                <h3 className="mb-2 font-poppins text-xl font-semibold">{useCase.title}</h3>
+                <p className="flex-1 text-sm leading-relaxed text-gray-500 dark:text-light-bg/50">{useCase.desc}</p>
+                <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-accent-pink">
+                  Learn More <ArrowRight className="h-4 w-4" />
                 </div>
               </Link>
             ))}
@@ -190,18 +255,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="section-padding">
         <div className="container-max">
-          <div className="relative bg-gradient-to-br from-accent-pink/10 to-accent-cyan/10 border border-gray-200 dark:border-white/5 rounded-2xl p-10 md:p-16 text-center overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-accent-pink/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-cyan/10 rounded-full blur-3xl" />
+          <div className="tech-shell border-none bg-[linear-gradient(135deg,rgba(255,60,130,0.12),rgba(161,231,238,0.16),rgba(255,255,255,0.92))] p-10 text-center md:p-16">
+            <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-accent-pink/10 blur-3xl" />
+            <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-accent-cyan/10 blur-3xl" />
             <div className="relative z-10">
-              <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-4">
-                Ready to Accelerate Your Workflow?
+              <h2 className="mb-4 font-poppins text-3xl font-bold md:text-4xl">
+                Ready to accelerate your workflow?
               </h2>
-              <p className="text-gray-500 dark:text-light-bg/60 max-w-xl mx-auto mb-8">
-                Generate modular audio assets from natural language. Built for professional producers and developers.
+              <p className="mx-auto mb-8 max-w-xl text-gray-500 dark:text-light-bg/60">
+                Generate modular audio assets from natural language. Built for professional producers,
+                developers, and audio startups.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link to="/products/users" className="btn-primary px-8 py-4 text-base">

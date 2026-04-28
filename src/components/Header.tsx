@@ -96,16 +96,20 @@ export default function Header() {
       <header className="fixed left-0 right-0 top-0 z-40 border-b border-gray-200/70 bg-white/88 backdrop-blur-xl transition-colors dark:border-white/10 dark:bg-dark-deeper/80">
         <div className="container-max px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-6">
-            <Link to="/" className="flex shrink-0 items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-accent-pink to-accent-cyan">
-                <span className="font-poppins text-sm font-bold text-white">S</span>
+            <Link to="/" className="group flex shrink-0 items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-gray-200/80 bg-white p-1.5 shadow-[0_10px_30px_rgba(15,23,42,0.08)] transition-transform duration-300 group-hover:scale-[1.03] dark:border-white/10 dark:bg-white/10">
+                <img
+                  src="/logo SoundAI v1.5 (1).svg"
+                  alt="SoundAI"
+                  className="h-full w-full object-contain"
+                />
               </div>
               <div className="leading-tight">
                 <div className="font-poppins text-base font-semibold text-gray-900 dark:text-light-bg">
                   SoundAI
                 </div>
-                <div className="text-[11px] uppercase tracking-[0.22em] text-gray-400 dark:text-light-bg/35">
-                  Audio Platform
+                <div className="text-[10px] uppercase tracking-[0.22em] text-gray-400 dark:text-light-bg/35">
+                  Audio intelligence stack
                 </div>
               </div>
             </Link>
@@ -141,7 +145,7 @@ export default function Header() {
                 <div className="absolute left-1/2 top-full z-50 mt-4 w-full max-w-5xl -translate-x-1/2">
                   <div className="overflow-hidden rounded-[28px] border border-gray-200/70 bg-white shadow-[0_22px_80px_rgba(15,23,42,0.14)] dark:border-white/10 dark:bg-dark-deeper">
                     <div className="grid gap-0 lg:grid-cols-[1.15fr_1.85fr]">
-                      <div className="border-b border-gray-200/70 bg-gray-50/90 p-8 dark:border-white/10 dark:bg-dark-bg/70 lg:border-b-0 lg:border-r">
+                      <div className="border-b border-gray-200/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(246,248,252,0.96))] p-8 dark:border-white/10 dark:bg-dark-bg/70 lg:border-b-0 lg:border-r">
                         <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-pink">
                           {activeSection.eyebrow}
                         </div>
@@ -151,6 +155,14 @@ export default function Header() {
                         <p className="mt-4 max-w-md text-sm leading-6 text-gray-500 dark:text-light-bg/55">
                           {activeSection.description}
                         </p>
+                        <div className="mt-8 flex flex-wrap gap-2">
+                          <span className="rounded-full border border-accent-pink/15 bg-accent-pink/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-pink">
+                            Prompt to asset
+                          </span>
+                          <span className="rounded-full border border-accent-cyan/20 bg-accent-cyan/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-cyan">
+                            Production ready
+                          </span>
+                        </div>
                         <Link
                           to="/coming-soon"
                           className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-accent-pink transition-colors hover:text-accent-cyan"
@@ -196,7 +208,7 @@ export default function Header() {
                 Request beta
               </Link>
               <Link to="/coming-soon" className="btn-primary px-4 py-2.5 text-xs">
-                Sign up or log in
+                Open platform
               </Link>
 
               <button
