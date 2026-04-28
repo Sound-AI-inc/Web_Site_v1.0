@@ -69,18 +69,32 @@
   }
   .btn-secondary {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-poppins font-semibold text-sm
-      bg-transparent border transition-all duration-300
-      text-gray-700 border-gray-300 hover:border-accent-cyan/60 hover:text-accent-cyan
+      bg-white border shadow-[0_8px_24px_rgba(15,23,42,0.06)] transition-all duration-300
+      text-gray-700 border-gray-200 hover:border-accent-cyan/60 hover:text-accent-cyan
+      dark:bg-dark-bg
       dark:text-light-bg dark:border-light-bg/20 dark:hover:border-accent-cyan/60 dark:hover:text-accent-cyan;
   }
   .card {
     @apply backdrop-blur-sm rounded-xl p-6 transition-all duration-300
-      bg-gray-50 border border-gray-200 hover:border-accent-pink/30
-      dark:bg-dark-bg/60 dark:border-white/5 dark:hover:border-accent-pink/20;
+      bg-white border border-gray-200 shadow-[0_12px_40px_rgba(15,23,42,0.06)] hover:border-accent-pink/30
+      dark:bg-dark-bg dark:border-white/10 dark:hover:border-accent-pink/20;
   }
   .tech-shell {
-    @apply relative overflow-hidden rounded-[28px] border border-gray-200/80 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.12)] backdrop-blur-xl
+    @apply relative overflow-hidden rounded-[28px] border border-gray-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.12)] backdrop-blur-xl
       dark:border-white/10 dark:bg-dark-bg;
+  }
+  .soft-panel {
+    @apply rounded-2xl border border-gray-200 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]
+      dark:border-white/10 dark:bg-dark-bg;
+  }
+  .soft-input {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm text-gray-900 shadow-[0_6px_20px_rgba(15,23,42,0.04)]
+      placeholder:text-gray-400 transition-colors focus:outline-none focus:border-accent-pink/50 focus:ring-4 focus:ring-accent-pink/10
+      dark:border-white/10 dark:bg-dark-bg dark:text-light-bg dark:placeholder:text-light-bg/30;
+  }
+  .soft-badge {
+    @apply inline-flex items-center rounded-full border border-gray-200 bg-gray-100 px-2 py-0.5 text-xs text-gray-500
+      dark:border-white/10 dark:bg-dark-bg dark:text-light-bg/45;
   }
   .tech-grid {
     background-image:
@@ -93,5 +107,16 @@
   }
   .waveform-bg {
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff3c82' fill-opacity='0.03'%3E%3Cpath d='M30 0v60M0 30h60'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

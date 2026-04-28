@@ -60,7 +60,7 @@ export default function Support() {
                     <input
                       type="text"
                       placeholder="Your name"
-                      className="w-full bg-gray-50 dark:bg-dark-deeper/60 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-900 dark:text-light-bg placeholder:text-gray-300 dark:text-light-bg/30 focus:outline-none focus:border-accent-pink/50"
+                      className="soft-input rounded-lg px-4 py-2.5"
                     />
                   </div>
                   <div>
@@ -68,13 +68,13 @@ export default function Support() {
                     <input
                       type="email"
                       placeholder="you@example.com"
-                      className="w-full bg-gray-50 dark:bg-dark-deeper/60 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-900 dark:text-light-bg placeholder:text-gray-300 dark:text-light-bg/30 focus:outline-none focus:border-accent-pink/50"
+                      className="soft-input rounded-lg px-4 py-2.5"
                     />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-500 dark:text-light-bg/60 mb-1.5">Category</label>
-                  <select className="w-full bg-gray-50 dark:bg-dark-deeper/60 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-500 dark:text-light-bg/60 focus:outline-none focus:border-accent-pink/50">
+                  <select className="soft-input rounded-lg px-4 py-2.5 text-gray-500 dark:text-light-bg/60">
                     <option>Getting Started</option>
                     <option>Billing</option>
                     <option>Export Issues</option>
@@ -88,7 +88,7 @@ export default function Support() {
                   <textarea
                     rows={5}
                     placeholder="Describe your issue or question..."
-                    className="w-full bg-gray-50 dark:bg-dark-deeper/60 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-900 dark:text-light-bg placeholder:text-gray-300 dark:text-light-bg/30 focus:outline-none focus:border-accent-pink/50 resize-none"
+                    className="soft-input rounded-lg px-4 py-2.5 resize-none"
                   />
                 </div>
                 <button className="btn-primary w-full py-3">

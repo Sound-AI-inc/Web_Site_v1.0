@@ -7,14 +7,12 @@ import {
   ArrowRight,
   Zap,
   Shield,
-  Layers,
   Terminal,
   Users,
   Globe,
-  Cpu,
-  Boxes,
 } from "lucide-react";
 import SectionHeading from "../components/SectionHeading";
+import LiveGenerationDemo from "../components/LiveGenerationDemo";
 
 const features = [
   {
@@ -81,7 +79,7 @@ export default function Home() {
         <div className="signal-line absolute right-[10%] top-[58%] h-px w-[34%] opacity-60" />
 
         <div className="container-max section-padding relative z-10">
-          <div className="grid items-start gap-10 lg:grid-cols-[1.08fr_0.92fr]">
+          <div className="grid items-start gap-10 lg:grid-cols-[1.02fr_0.98fr]">
             <div className="max-w-4xl">
               <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-pink/20 bg-accent-pink/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-pink">
                 AI-Powered Music Production
@@ -114,93 +112,14 @@ export default function Home() {
                     <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-light-bg/35">
                       {stat.label}
                     </div>
-                    <div className="mt-2 text-sm font-semibold text-gray-900 dark:text-light-bg">
-                      {stat.value}
-                    </div>
+                    <div className="mt-2 text-sm font-semibold text-gray-900 dark:text-light-bg">{stat.value}</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="tech-shell p-5 md:p-6">
-              <div className="mb-4 flex items-center justify-between gap-4">
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-pink">
-                    Live generation flow
-                  </div>
-                  <div className="mt-2 font-poppins text-xl font-semibold text-gray-900 dark:text-light-bg">
-                    Prompt to Metadata to Model to Outputs
-                  </div>
-                </div>
-                <div className="rounded-full border border-accent-cyan/20 bg-accent-cyan/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-cyan">
-                  Multi-surface
-                </div>
-              </div>
-
-              <div className="rounded-[22px] border border-gray-200/80 bg-[linear-gradient(180deg,rgba(248,250,252,0.88),rgba(255,255,255,0.96))] p-5 dark:border-white/10 dark:bg-dark-deeper/70">
-                <div className="mb-4 flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-accent-pink/60" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-400/60" />
-                  <div className="h-3 w-3 rounded-full bg-green-400/60" />
-                </div>
-                <div className="mb-3 font-mono text-sm text-gray-500 dark:text-light-bg/50">$ soundai generate</div>
-                <div className="mb-5 rounded-xl border border-gray-200 bg-white/88 p-4 dark:border-white/10 dark:bg-dark-bg/50">
-                  <p className="font-mono text-sm text-accent-cyan">
-                    &gt; "Dark ambient pad, 120 BPM, A minor, with analog warmth"
-                  </p>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {[
-                    {
-                      icon: Boxes,
-                      label: "Routing layer",
-                      desc: "Metadata selects compatible model, format, and output contract.",
-                    },
-                    {
-                      icon: Cpu,
-                      label: "Model execution",
-                      desc: "Audio, MIDI, and preset models run against the same prompt context.",
-                    },
-                    {
-                      icon: Layers,
-                      label: "Structured outputs",
-                      desc: "Waveforms, note events, patch parameters, and metadata stay synchronized.",
-                    },
-                    {
-                      icon: Terminal,
-                      label: "Production handoff",
-                      desc: "Assets are ready for export, editing, and API delivery.",
-                    },
-                  ].map((item) => (
-                    <div key={item.label} className="rounded-2xl border border-gray-200/80 bg-white/72 p-4 dark:border-white/10 dark:bg-dark-bg/45">
-                      <div className="mb-2 flex items-center gap-2">
-                        <item.icon className="h-4 w-4 text-accent-pink" />
-                        <p className="text-sm font-semibold text-gray-900 dark:text-light-bg">{item.label}</p>
-                      </div>
-                      <p className="text-sm leading-6 text-gray-500 dark:text-light-bg/55">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
-                  {[
-                    { label: "Audio Sample", ext: ".wav" },
-                    { label: "MIDI Pattern", ext: ".mid" },
-                    { label: "VST Preset", ext: ".fxp" },
-                    { label: "Metadata", ext: ".json" },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="rounded-xl border border-accent-pink/10 bg-gray-50/90 p-3 text-center dark:bg-dark-bg/60"
-                    >
-                      <Layers className="mx-auto mb-2 h-5 w-5 text-accent-pink" />
-                      <p className="text-xs font-semibold text-gray-900 dark:text-light-bg">{item.label}</p>
-                      <p className="font-mono text-xs text-gray-400 dark:text-light-bg/40">{item.ext}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="flex h-full items-center justify-center">
+              <LiveGenerationDemo />
             </div>
           </div>
         </div>

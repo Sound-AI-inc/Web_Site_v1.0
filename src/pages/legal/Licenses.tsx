@@ -55,11 +55,11 @@ export default function Licenses() {
           subtitle="Third-party and open-source components used in the SoundAI platform."
         />
 
-        <div className="card">
+        <div className="soft-panel overflow-hidden p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-white/10">
+                <tr className="border-b border-gray-200/85 bg-gray-50/85 dark:border-white/10 dark:bg-white/[0.04]">
                   <th className="text-left py-3 px-4 font-poppins font-semibold text-gray-600 dark:text-light-bg/70">Component</th>
                   <th className="text-left py-3 px-4 font-poppins font-semibold text-gray-600 dark:text-light-bg/70">Version</th>
                   <th className="text-left py-3 px-4 font-poppins font-semibold text-gray-600 dark:text-light-bg/70">License</th>
@@ -68,7 +68,7 @@ export default function Licenses() {
               </thead>
               <tbody>
                 {licenses.map((l) => (
-                  <tr key={l.name} className="border-b border-gray-200 dark:border-white/5 hover:bg-white/2">
+                  <tr key={l.name} className="border-b border-gray-200/85 transition-colors hover:bg-gray-50/70 dark:border-white/5 dark:hover:bg-white/[0.03]">
                     <td className="py-3 px-4 text-gray-900 dark:text-light-bg/80 font-medium">{l.name}</td>
                     <td className="py-3 px-4 text-gray-500 dark:text-light-bg/50 font-mono text-xs">{l.version}</td>
                     <td className="py-3 px-4">

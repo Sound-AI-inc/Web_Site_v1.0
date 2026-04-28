@@ -26,8 +26,8 @@ const Auth = lazy(() => import("./pages/Auth"));
 
 function RouteFallback() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white px-6 dark:bg-dark-deeper">
-      <div className="rounded-full border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-700 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-light-bg/75">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6 dark:bg-dark-deeper">
+      <div className="rounded-full border border-gray-200/85 bg-white/86 px-5 py-3 text-sm font-medium text-gray-700 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-light-bg/75">
         Loading SoundAI...
       </div>
     </div>

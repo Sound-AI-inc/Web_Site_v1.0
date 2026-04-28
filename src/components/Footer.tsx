@@ -55,7 +55,7 @@ export default function Footer() {
             <input
               type="email"
               placeholder="you@example.com"
-              className="flex-1 md:w-64 bg-white dark:bg-dark-bg border border-gray-300 dark:border-white/10 rounded-l-lg px-4 py-2.5 text-sm text-gray-900 dark:text-light-bg placeholder:text-gray-400 dark:placeholder:text-light-bg/30 focus:outline-none focus:border-accent-pink/50"
+              className="soft-input flex-1 rounded-l-lg rounded-r-none md:w-64"
             />
             <button className="btn-primary rounded-l-none rounded-r-lg text-xs px-5">
               Subscribe
@@ -89,7 +89,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-gray-200 dark:border-white/5">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200 bg-white p-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-white/10">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200/80 bg-[linear-gradient(145deg,rgba(255,255,255,0.96),rgba(241,245,249,0.92))] p-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[linear-gradient(145deg,rgba(255,255,255,0.16),rgba(255,255,255,0.06))]">
               <img
                 src="/logo SoundAI v1.5 (1).svg"
                 alt="SoundAI"
