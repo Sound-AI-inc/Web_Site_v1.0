@@ -83,6 +83,12 @@
     @apply relative overflow-hidden rounded-[28px] border border-gray-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.12)] backdrop-blur-xl
       dark:border-white/10 dark:bg-dark-bg;
   }
+  .soundai-logo-mark {
+    @apply object-contain;
+  }
+  .dark .soundai-logo-mark {
+    filter: brightness(0) invert(1);
+  }
   .soft-panel {
     @apply rounded-2xl border border-gray-200 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]
       dark:border-white/10 dark:bg-dark-bg;

@@ -36,9 +36,9 @@ const SCENARIOS: DemoScenario[] = [
     model: "SoundCraft",
     prompt: "Dusty lo-fi loop with Rhodes chords, tape wobble and soft brush drums at 82 BPM",
     results: [
-      { kind: "audio", title: "Summer Lo-fi Sketch", meta: "WAV · 0:06 · 82 BPM", accent: "#ff3c82" },
-      { kind: "audio", title: "Dust Bloom Loop", meta: "WAV · 0:08 · Chill swing", accent: "#ff98a8" },
-      { kind: "audio", title: "Late Tape Pocket", meta: "FLAC · 0:07 · Warm keys", accent: "#a1e7ee" },
+      { kind: "audio", title: "Summer Lo-fi Sketch", meta: "WAV - 0:06 - 82 BPM", accent: "#ff3c82" },
+      { kind: "audio", title: "Dust Bloom Loop", meta: "WAV - 0:08 - Chill swing", accent: "#ff98a8" },
+      { kind: "audio", title: "Late Tape Pocket", meta: "FLAC - 0:07 - Warm keys", accent: "#a1e7ee" },
     ],
   },
   {
@@ -46,9 +46,9 @@ const SCENARIOS: DemoScenario[] = [
     model: "MidiCraft",
     prompt: "Melancholic piano melody in A minor with rainy phrasing and long-note lift",
     results: [
-      { kind: "midi", title: "Rainy Day Melody", meta: "MIDI · 8 bars · A minor", accent: "#a1e7ee" },
-      { kind: "midi", title: "Windowlight Motif", meta: "MIDI · 6 bars · Sparse notes", accent: "#ff98a8" },
-      { kind: "midi", title: "Blue Hour Phrase", meta: "MIDI · 8 bars · Piano lead", accent: "#ff3c82" },
+      { kind: "midi", title: "Rainy Day Melody", meta: "MIDI - 8 bars - A minor", accent: "#a1e7ee" },
+      { kind: "midi", title: "Windowlight Motif", meta: "MIDI - 6 bars - Sparse notes", accent: "#ff98a8" },
+      { kind: "midi", title: "Blue Hour Phrase", meta: "MIDI - 8 bars - Piano lead", accent: "#ff3c82" },
     ],
   },
   {
@@ -56,9 +56,9 @@ const SCENARIOS: DemoScenario[] = [
     model: "VSTCraft",
     prompt: "Bright synthwave lead preset with analog edge, chorus width and glossy top end",
     results: [
-      { kind: "preset", title: "Neon Drive Lead", meta: "VST3 · Saw stack · Chorus", accent: "#ff3c82" },
-      { kind: "preset", title: "Midnight Signal", meta: "FXP · Filter lead · Retro", accent: "#a1e7ee" },
-      { kind: "preset", title: "Chrome Sunset", meta: "AUPRESET · Wide stereo", accent: "#ff98a8" },
+      { kind: "preset", title: "Neon Drive Lead", meta: "VST3 - Saw stack - Chorus", accent: "#ff3c82" },
+      { kind: "preset", title: "Midnight Signal", meta: "FXP - Filter lead - Retro", accent: "#a1e7ee" },
+      { kind: "preset", title: "Chrome Sunset", meta: "AUPRESET - Wide stereo", accent: "#ff98a8" },
     ],
   },
 ];
@@ -123,8 +123,8 @@ export default function LiveGenerationDemo() {
   }, [scenario.results.length, scenarioIndex]);
 
   return (
-    <div className="mx-auto flex w-full max-w-[960px] flex-col items-center">
-      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent-pink/15 bg-accent-pink/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-pink">
+    <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center">
+      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/18 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-900 shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/15 dark:bg-white/8 dark:text-white/88">
         <Sparkles className="h-3.5 w-3.5" />
         Live generation flow
       </div>
@@ -136,7 +136,7 @@ export default function LiveGenerationDemo() {
             className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
               index === scenarioIndex
                 ? "border-accent-cyan/35 bg-accent-cyan/12 text-accent-cyan"
-                : "border-gray-200/80 bg-white/60 text-gray-400 dark:border-white/10 dark:bg-white/5 dark:text-light-bg/35"
+                : "border-white/30 bg-white/16 text-gray-600 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:text-light-bg/35"
             }`}
           >
             {item.type}
@@ -144,8 +144,8 @@ export default function LiveGenerationDemo() {
         ))}
       </div>
 
-      <div className="tech-shell mt-6 w-full p-5 md:p-7">
-        <div className="mx-auto max-w-3xl">
+      <div className="mt-6 w-full rounded-[36px] border border-white/35 bg-[linear-gradient(180deg,rgba(255,255,255,0.7),rgba(255,255,255,0.48))] p-5 shadow-[0_30px_90px_rgba(15,23,42,0.12)] backdrop-blur-[22px] dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] md:p-7">
+        <div className="mx-auto max-w-4xl">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-light-bg/35">
@@ -160,16 +160,16 @@ export default function LiveGenerationDemo() {
             </span>
           </div>
 
-          <div className="rounded-[24px] border border-gray-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(246,248,252,0.92))] p-4 shadow-[0_18px_70px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(18,24,33,0.82),rgba(10,14,20,0.9))]">
+          <div className="rounded-[28px] border border-white/40 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(249,245,237,0.82))] p-4 shadow-[0_18px_70px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(18,24,33,0.82),rgba(10,14,20,0.9))]">
             <div className="flex items-center gap-2">
               <div className="h-2.5 w-2.5 rounded-full bg-accent-pink/60" />
               <div className="h-2.5 w-2.5 rounded-full bg-amber-300/70" />
               <div className="h-2.5 w-2.5 rounded-full bg-emerald-300/70" />
             </div>
 
-            <div className="mt-4 rounded-2xl border border-gray-200/80 bg-white/88 p-4 dark:border-white/10 dark:bg-white/[0.04]">
+            <div className="mt-4 rounded-[28px] border border-white/50 bg-white/84 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] dark:border-white/10 dark:bg-white/[0.04]">
               <div className="flex flex-col gap-3">
-                <div className="rounded-2xl border border-gray-200/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.94),rgba(248,250,252,0.96))] px-4 py-3 dark:border-white/10 dark:bg-dark-bg/50">
+                <div className="rounded-[24px] border border-white/50 bg-[linear-gradient(135deg,rgba(255,255,255,0.94),rgba(248,250,252,0.96))] px-4 py-4 dark:border-white/10 dark:bg-dark-bg/50">
                   <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-light-bg/35">
                     Prompt
                   </div>
@@ -187,7 +187,7 @@ export default function LiveGenerationDemo() {
                       </span>
                     </div>
                     <div className="mt-1 text-xs text-gray-500 dark:text-light-bg/50">
-                      Metadata aligns prompt intent, output format, and model routing before reveal.
+                      The prompt is interpreted, staged, and revealed as synchronized output drafts.
                     </div>
                   </div>
                   <div className="w-full max-w-[220px]">

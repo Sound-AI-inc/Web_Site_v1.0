@@ -6,7 +6,7 @@ const endpoints = [
   {
     method: "POST",
     path: "/v1/generate",
-    desc: "Generate audio, MIDI, presets, and metadata from a text prompt.",
+    desc: "Generate audio, MIDI, presets, and project data from a text prompt.",
   },
   {
     method: "GET",
@@ -16,7 +16,7 @@ const endpoints = [
   {
     method: "POST",
     path: "/v1/generate/batch",
-    desc: "Batch generation of multiple assets from an array of prompts.",
+    desc: "Generate multiple assets from an array of prompts.",
   },
   {
     method: "GET",
@@ -56,7 +56,7 @@ const responseExample = `{
       "format": "fxp",
       "plugin": "SoundAI Synth"
     },
-    "metadata": {
+    "project_data": {
       "bpm": 120,
       "key": "Am",
       "scale": "natural_minor",
@@ -70,23 +70,23 @@ const responseExample = `{
 export default function Api() {
   return (
     <>
-      {/* Hero */}
       <section className="section-padding waveform-bg relative overflow-hidden">
-        <div className="absolute top-0 -right-32 w-96 h-96 bg-accent-cyan/10 rounded-full blur-3xl" />
+        <div className="absolute -right-32 top-0 h-96 w-96 rounded-full bg-accent-cyan/10 blur-3xl" />
         <div className="container-max relative z-10">
           <div className="max-w-3xl">
-            <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase rounded-full bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 mb-6">
+            <span className="mb-6 inline-block rounded-full border border-accent-cyan/20 bg-accent-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-cyan">
               API Reference
             </span>
-            <h1 className="font-poppins font-extrabold text-4xl md:text-5xl leading-tight mb-6">
+            <h1 className="mb-6 font-poppins text-4xl font-extrabold leading-tight md:text-5xl">
               SoundAI <span className="gradient-text">API</span>
             </h1>
-            <p className="text-gray-500 dark:text-light-bg/60 text-lg leading-relaxed mb-8">
-              REST and GraphQL endpoints for AI audio generation. JSON responses, secure authentication, and cloud-hosted asset delivery.
+            <p className="mb-8 text-lg leading-relaxed text-gray-500 dark:text-light-bg/60">
+              REST and GraphQL endpoints for AI audio generation with secure authentication,
+              JSON responses, and cloud-hosted asset delivery.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/docs" className="btn-primary text-sm">
-                Get API Key <ArrowRight className="w-4 h-4 ml-2" />
+                Get API Key <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <Link to="/docs" className="btn-secondary text-sm">
                 View Full Documentation
@@ -96,27 +96,25 @@ export default function Api() {
         </div>
       </section>
 
-      {/* Features */}
       <section className="section-padding">
         <div className="container-max">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
               { icon: Zap, label: "REST + GraphQL", desc: "Flexible query methods" },
               { icon: Shield, label: "Secure Auth", desc: "API key + OAuth2" },
               { icon: Cloud, label: "Cloud Delivery", desc: "CDN-hosted assets" },
               { icon: Globe, label: "Global Edge", desc: "Low-latency access" },
             ].map((item) => (
-              <div key={item.label} className="card text-center py-6">
-                <item.icon className="w-7 h-7 text-accent-cyan mx-auto mb-3" />
-                <p className="font-poppins font-semibold text-sm">{item.label}</p>
-                <p className="text-gray-400 dark:text-light-bg/40 text-xs mt-1">{item.desc}</p>
+              <div key={item.label} className="card py-6 text-center">
+                <item.icon className="mx-auto mb-3 h-7 w-7 text-accent-cyan" />
+                <p className="font-poppins text-sm font-semibold">{item.label}</p>
+                <p className="mt-1 text-xs text-gray-400 dark:text-light-bg/40">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Endpoints */}
       <section className="section-padding waveform-bg">
         <div className="container-max">
           <SectionHeading
@@ -124,44 +122,39 @@ export default function Api() {
             title="Core API Endpoints"
             subtitle="Key endpoints for generating, retrieving, and managing audio assets."
           />
-          <div className="max-w-4xl mx-auto space-y-3">
-            {endpoints.map((ep) => (
-              <div key={ep.path} className="card flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="mx-auto max-w-4xl space-y-3">
+            {endpoints.map((endpoint) => (
+              <div key={endpoint.path} className="card flex flex-col gap-3 sm:flex-row sm:items-center">
                 <span
-                  className={`inline-block px-2.5 py-1 text-xs font-mono font-bold rounded ${
-                    ep.method === "POST"
+                  className={`inline-block rounded px-2.5 py-1 text-xs font-bold ${
+                    endpoint.method === "POST"
                       ? "bg-accent-pink/10 text-accent-pink"
                       : "bg-accent-cyan/10 text-accent-cyan"
                   }`}
                 >
-                  {ep.method}
+                  {endpoint.method}
                 </span>
-                <code className="font-mono text-sm text-gray-600 dark:text-light-bg/70 flex-1">{ep.path}</code>
-                <p className="text-gray-400 dark:text-light-bg/40 text-xs sm:text-right sm:max-w-xs">{ep.desc}</p>
+                <code className="flex-1 font-mono text-sm text-gray-600 dark:text-light-bg/70">{endpoint.path}</code>
+                <p className="text-xs text-gray-400 dark:text-light-bg/40 sm:max-w-xs sm:text-right">{endpoint.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Response Example */}
       <section className="section-padding">
         <div className="container-max">
-          <SectionHeading
-            badge="Response"
-            title="Example Response"
-            subtitle="JSON response from the /v1/generate endpoint."
-          />
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gray-100 dark:bg-dark-bg/60 border border-gray-200 dark:border-white/5 rounded-2xl overflow-hidden">
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 dark:border-white/5">
-                <div className="w-3 h-3 rounded-full bg-accent-pink/60" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
-                <div className="w-3 h-3 rounded-full bg-green-400/60" />
-                <span className="ml-3 text-xs text-gray-300 dark:text-light-bg/30 font-mono">200 OK — application/json</span>
+          <SectionHeading badge="Response" title="Example Response" subtitle="JSON response from the /v1/generate endpoint." />
+          <div className="mx-auto max-w-4xl">
+            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 dark:border-white/5 dark:bg-dark-bg/60">
+              <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-white/5">
+                <div className="h-3 w-3 rounded-full bg-accent-pink/60" />
+                <div className="h-3 w-3 rounded-full bg-yellow-400/60" />
+                <div className="h-3 w-3 rounded-full bg-green-400/60" />
+                <span className="ml-3 font-mono text-xs text-gray-300 dark:text-light-bg/30">200 OK - application/json</span>
               </div>
-              <pre className="p-6 overflow-x-auto text-sm leading-relaxed">
-                <code className="text-gray-600 dark:text-light-bg/70 font-mono">{responseExample}</code>
+              <pre className="overflow-x-auto p-6 text-sm leading-relaxed">
+                <code className="font-mono text-gray-600 dark:text-light-bg/70">{responseExample}</code>
               </pre>
             </div>
           </div>

@@ -16,54 +16,52 @@ const benefits = [
   {
     icon: CheckCircle2,
     title: "Editable & Modular",
-    desc: "Every generated asset can be modified, layered, and rearranged in your DAW.",
+    desc: "Every generated asset can be modified, layered, and rearranged inside your DAW.",
   },
   {
     icon: CheckCircle2,
     title: "DAW-Native Export",
-    desc: "Direct export to Ableton, FL Studio, Logic Pro with zero conversion steps.",
+    desc: "Direct export to Ableton, FL Studio, and Logic Pro without extra conversion steps.",
   },
   {
     icon: CheckCircle2,
     title: "Synchronized Assets",
-    desc: "Audio, MIDI, presets, and metadata are generated in sync from a single prompt.",
+    desc: "Audio, MIDI, and presets stay aligned from a single prompt direction.",
   },
   {
     icon: CheckCircle2,
-    title: "Compliance-Ready",
-    desc: "Clear usage rights and metadata for every generated asset.",
+    title: "Clear Rights Context",
+    desc: "Every generated asset ships with clearer usage and origin signals.",
   },
 ];
 
 const constraints = [
-  "Full AI-generated tracks face legal and copyright ambiguity",
-  "Complete songs lack the editability producers need",
-  "Monolithic outputs don't integrate with existing DAW workflows",
-  "Quality control is harder with full-track generation",
+  "Full AI-generated tracks still create legal and copyright ambiguity",
+  "Complete songs remove the editability producers expect",
+  "Monolithic outputs do not fit existing DAW workflows well",
+  "Quality control becomes harder when the whole track arrives at once",
 ];
 
 export default function About() {
   return (
     <>
-      {/* Hero */}
       <section className="section-padding waveform-bg relative overflow-hidden">
-        <div className="absolute top-1/4 -right-32 w-96 h-96 bg-accent-pink/15 rounded-full blur-3xl" />
+        <div className="absolute -right-32 top-1/4 h-96 w-96 rounded-full bg-accent-pink/15 blur-3xl" />
         <div className="container-max relative z-10">
           <div className="max-w-3xl">
-            <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase rounded-full bg-accent-pink/10 text-accent-pink border border-accent-pink/20 mb-6">
+            <span className="mb-6 inline-block rounded-full border border-accent-pink/20 bg-accent-pink/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-pink">
               About SoundAI
             </span>
-            <h1 className="font-poppins font-extrabold text-4xl md:text-5xl lg:text-6xl leading-tight mb-6">
-              Accelerate Music Production with{" "}
-              <span className="gradient-text">Modular AI</span>
+            <h1 className="mb-6 font-poppins text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl">
+              Accelerate Music Production with <span className="gradient-text">Modular AI</span>
             </h1>
-            <p className="text-gray-500 dark:text-light-bg/60 text-lg md:text-xl leading-relaxed mb-8">
-              SoundAI generates editable samples, MIDI patterns, VST presets, and structured metadata
-              from natural language prompts — purpose-built for real production workflows in professional DAWs.
+            <p className="mb-8 text-lg leading-relaxed text-gray-500 dark:text-light-bg/60 md:text-xl">
+              SoundAI generates editable samples, MIDI patterns, and VST presets from natural
+              language prompts, purpose-built for real production workflows in professional DAWs.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/products/users" className="btn-primary">
-                Start Creating <ArrowRight className="w-4 h-4 ml-2" />
+                Start Creating <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <Link to="/about" className="btn-secondary">
                 Request Beta Access
@@ -73,38 +71,29 @@ export default function About() {
         </div>
       </section>
 
-      {/* Why Modular */}
       <section className="section-padding">
         <div className="container-max">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="grid items-start gap-12 lg:grid-cols-2">
             <div>
-              <SectionHeading
-                badge="Why Modular?"
-                title="The Problem with Full-Track AI"
-                centered={false}
-              />
+              <SectionHeading badge="Why Modular?" title="The Problem with Full-Track AI" centered={false} />
               <div className="space-y-4">
-                {constraints.map((c, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-gray-500 dark:text-light-bg/60 text-sm">{c}</p>
+                {constraints.map((item) => (
+                  <div key={item} className="flex items-start gap-3">
+                    <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-400" />
+                    <p className="text-sm text-gray-500 dark:text-light-bg/60">{item}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div>
-              <SectionHeading
-                badge="Our Approach"
-                title="Modular Assets, Full Control"
-                centered={false}
-              />
+              <SectionHeading badge="Our Approach" title="Modular Assets, Full Control" centered={false} />
               <div className="space-y-4">
-                {benefits.map((b) => (
-                  <div key={b.title} className="flex items-start gap-3">
-                    <b.icon className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                {benefits.map((benefit) => (
+                  <div key={benefit.title} className="flex items-start gap-3">
+                    <benefit.icon className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-400" />
                     <div>
-                      <h4 className="font-poppins font-semibold text-sm">{b.title}</h4>
-                      <p className="text-gray-500 dark:text-light-bg/50 text-sm">{b.desc}</p>
+                      <h4 className="font-poppins text-sm font-semibold">{benefit.title}</h4>
+                      <p className="text-sm text-gray-500 dark:text-light-bg/50">{benefit.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -114,75 +103,51 @@ export default function About() {
         </div>
       </section>
 
-      {/* Diagram */}
       <section className="section-padding waveform-bg">
         <div className="container-max">
           <SectionHeading
             badge="How It Works"
-            title="One Prompt — Multi-Format Output"
+            title="One Prompt, Multi-Format Output"
             subtitle="A single natural language prompt generates synchronized, production-ready assets."
           />
-          <div className="max-w-4xl mx-auto">
-            {/* Prompt input */}
-            <div className="bg-gray-100 dark:bg-dark-bg/60 border border-gray-200 dark:border-white/5 rounded-xl p-6 mb-6 text-center">
-              <Sparkles className="w-8 h-8 text-accent-pink mx-auto mb-3" />
-              <p className="font-poppins font-semibold text-lg mb-1">Natural Language Prompt</p>
-              <p className="text-gray-400 dark:text-light-bg/40 text-sm italic">
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-6 rounded-xl border border-gray-200 bg-gray-100 p-6 text-center dark:border-white/5 dark:bg-dark-bg/60">
+              <Sparkles className="mx-auto mb-3 h-8 w-8 text-accent-pink" />
+              <p className="mb-1 font-poppins text-lg font-semibold">Natural Language Prompt</p>
+              <p className="text-sm italic text-gray-400 dark:text-light-bg/40">
                 "Warm analog pad, 90 BPM, C minor, with slow attack and ambient tail"
               </p>
             </div>
 
-            {/* Arrow */}
-            <div className="flex justify-center mb-6">
-              <div className="w-px h-12 bg-gradient-to-b from-accent-pink to-accent-cyan" />
+            <div className="mb-6 flex justify-center">
+              <div className="h-12 w-px bg-gradient-to-b from-accent-pink to-accent-cyan" />
             </div>
 
-            {/* Outputs */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {[
                 { icon: AudioWaveform, label: "Audio Sample", format: ".wav / .flac", color: "text-accent-pink" },
                 { icon: Music2, label: "MIDI Pattern", format: ".mid", color: "text-accent-cyan" },
                 { icon: Settings2, label: "VST Preset", format: ".fxp / .vstpreset", color: "text-purple-400" },
-                { icon: FileAudio, label: "Metadata", format: ".json", color: "text-yellow-400" },
+                { icon: FileAudio, label: "Project Data", format: ".json", color: "text-yellow-400" },
               ].map((item) => (
                 <div key={item.label} className="card text-center">
-                  <item.icon className={`w-8 h-8 ${item.color} mx-auto mb-3`} />
-                  <h4 className="font-poppins font-semibold text-sm mb-1">{item.label}</h4>
-                  <p className="text-gray-400 dark:text-light-bg/40 text-xs font-mono">{item.format}</p>
+                  <item.icon className={`mx-auto mb-3 h-8 w-8 ${item.color}`} />
+                  <h4 className="mb-1 font-poppins text-sm font-semibold">{item.label}</h4>
+                  <p className="font-mono text-xs text-gray-400 dark:text-light-bg/40">{item.format}</p>
                 </div>
               ))}
             </div>
 
-            {/* Sync note */}
-            <div className="mt-6 bg-accent-cyan/5 border border-accent-cyan/10 rounded-xl p-4 flex items-start gap-3">
-              <Layers className="w-5 h-5 text-accent-cyan mt-0.5 flex-shrink-0" />
+            <div className="mt-6 flex items-start gap-3 rounded-xl border border-accent-cyan/10 bg-accent-cyan/5 p-4">
+              <Layers className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent-cyan" />
               <div>
-                <h4 className="font-poppins font-semibold text-sm text-accent-cyan">Asset Synchronization</h4>
-                <p className="text-gray-500 dark:text-light-bg/50 text-sm">
-                  All outputs share BPM, key, scale, and timing data — ensuring perfect alignment when loaded into your DAW project.
+                <h4 className="font-poppins text-sm font-semibold text-accent-cyan">Asset Synchronization</h4>
+                <p className="text-sm text-gray-500 dark:text-light-bg/50">
+                  All outputs share BPM, key, scale, and timing data, ensuring clean alignment
+                  when loaded into your DAW project.
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="section-padding">
-        <div className="container-max text-center">
-          <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-4">
-            Ready to Build with Modular AI?
-          </h2>
-          <p className="text-gray-500 dark:text-light-bg/60 max-w-xl mx-auto mb-8">
-            Join the beta and start generating production-ready assets from natural language.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/products/users" className="btn-primary px-8 py-4">
-              Start Creating
-            </Link>
-            <Link to="/about" className="btn-secondary px-8 py-4">
-              Request Beta Access
-            </Link>
           </div>
         </div>
       </section>
