@@ -1,15 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  AudioWaveform,
-  FileAudio,
-  Settings2,
-  Music2,
-  Layers,
-  AlertTriangle,
-  CheckCircle2,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, AudioWaveform, Settings2, Music2, Layers, AlertTriangle, CheckCircle2, Sparkles } from "lucide-react";
 import SectionHeading from "../../components/SectionHeading";
 
 const benefits = [
@@ -123,12 +113,11 @@ export default function About() {
               <div className="h-12 w-px bg-gradient-to-b from-accent-pink to-accent-cyan" />
             </div>
 
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {[
                 { icon: AudioWaveform, label: "Audio Sample", format: ".wav / .flac", color: "text-accent-pink" },
                 { icon: Music2, label: "MIDI Pattern", format: ".mid", color: "text-accent-cyan" },
                 { icon: Settings2, label: "VST Preset", format: ".fxp / .vstpreset", color: "text-purple-400" },
-                { icon: FileAudio, label: "Project Data", format: ".json", color: "text-yellow-400" },
               ].map((item) => (
                 <div key={item.label} className="card text-center">
                   <item.icon className={`mx-auto mb-3 h-8 w-8 ${item.color}`} />

@@ -69,37 +69,37 @@ const useCases = [
 export default function Home() {
   return (
     <>
-      <section className="relative flex min-h-screen items-center overflow-hidden bg-[radial-gradient(90%_70%_at_50%_18%,rgba(255,255,255,0.94)_0%,rgba(255,255,255,0.64)_24%,rgba(255,255,255,0)_52%),linear-gradient(180deg,#f8f5ef_0%,#dbe6ff_24%,#6d8eff_55%,#ea86dc_78%,#ff2f86_100%)] dark:bg-[radial-gradient(85%_64%_at_50%_14%,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_38%),linear-gradient(180deg,#14110f_0%,#1f2548_24%,#4f72ff_54%,#cb79d7_76%,#ff2f86_100%)]">
-        <div className="absolute inset-0 bg-[radial-gradient(64%_44%_at_16%_38%,rgba(255,255,255,0.32)_0%,rgba(255,255,255,0)_65%),radial-gradient(64%_44%_at_84%_36%,rgba(255,255,255,0.28)_0%,rgba(255,255,255,0)_68%)]" />
+      <section className="relative flex min-h-screen items-center overflow-hidden bg-[radial-gradient(62%_42%_at_50%_14%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.54)_34%,rgba(255,255,255,0)_66%),radial-gradient(46%_36%_at_18%_36%,rgba(161,231,238,0.42)_0%,rgba(161,231,238,0)_68%),radial-gradient(42%_34%_at_84%_38%,rgba(255,60,130,0.18)_0%,rgba(255,60,130,0)_72%),linear-gradient(180deg,#eff3f6_0%,#e7eef6_24%,#c1caf6_48%,#ff98a8_76%,#ff3c82_100%)]">
+        <div className="absolute inset-0 bg-[radial-gradient(72%_52%_at_50%_52%,rgba(103,136,255,0.34)_0%,rgba(103,136,255,0.14)_26%,rgba(103,136,255,0)_56%),linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0)_28%,rgba(255,255,255,0.04)_100%)]" />
         <div className="tech-grid absolute inset-0 opacity-20" />
-        <div className="absolute left-1/2 top-[18%] h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-white/30 blur-3xl dark:bg-white/10" />
+        <div className="absolute left-1/2 top-[18%] h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-white/28 blur-3xl" />
 
         <div className="container-max section-padding relative z-10">
           <div className="flex flex-col items-center text-center">
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/16 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-gray-900 shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/15 dark:bg-white/8 dark:text-white/90">
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/16 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-gray-900 shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl">
               <Sparkles className="h-3.5 w-3.5" />
               Prompt-native music creation
             </span>
             <div className="max-w-5xl">
-              <h1 className="font-poppins text-4xl font-extrabold leading-[0.96] text-gray-950 sm:text-5xl md:text-6xl lg:text-[5.3rem] dark:text-white">
+              <h1 className="font-poppins text-4xl font-extrabold leading-[0.96] text-gray-950 sm:text-5xl md:text-6xl lg:text-[5.3rem]">
                 Turn ideas into audio,
                 <br />
                 melodies, and presets.
               </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-gray-700/80 md:text-lg dark:text-white/70">
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-gray-700/80 md:text-lg">
                 SoundAI gives producers one creative surface to sketch songs, shape motifs,
                 and build production-ready assets from a single prompt.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <Link
                   to="/products/users"
-                  className="inline-flex items-center justify-center rounded-full bg-gray-950 px-8 py-4 font-poppins text-sm font-semibold text-white shadow-[0_18px_44px_rgba(17,24,39,0.22)] transition-transform duration-300 hover:-translate-y-0.5 dark:bg-white dark:text-gray-950"
+                  className="inline-flex items-center justify-center rounded-full bg-gray-950 px-8 py-4 font-poppins text-sm font-semibold text-white shadow-[0_18px_44px_rgba(17,24,39,0.22)] transition-transform duration-300 hover:-translate-y-0.5"
                 >
                   Start creating
                 </Link>
                 <Link
                   to="/about"
-                  className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/14 px-8 py-4 font-poppins text-sm font-semibold text-gray-900 backdrop-blur-xl transition-transform duration-300 hover:-translate-y-0.5 dark:border-white/15 dark:bg-white/8 dark:text-white"
+                  className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/14 px-8 py-4 font-poppins text-sm font-semibold text-gray-900 backdrop-blur-xl transition-transform duration-300 hover:-translate-y-0.5"
                 >
                   See platform
                 </Link>
@@ -108,7 +108,7 @@ export default function Home() {
                 {["Text to audio", "Multi-output generation", "DAW-ready exports"].map((label) => (
                   <span
                     key={label}
-                    className="rounded-full border border-white/28 bg-white/14 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-800 backdrop-blur-xl dark:border-white/15 dark:bg-white/8 dark:text-white/72"
+                    className="rounded-full border border-white/28 bg-white/14 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-800 backdrop-blur-xl"
                   >
                     {label}
                   </span>

@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, Menu, Moon, Sun, X, ArrowUpRight } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
+import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
 
 interface MenuLink {
   label: string;
@@ -71,7 +70,6 @@ const navItems: MenuSection[] = [
 ];
 
 export default function Header() {
-  const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const closeTimerRef = useRef<number | null>(null);
@@ -194,20 +192,11 @@ export default function Header() {
             </div>
 
             <div className="flex shrink-0 items-center gap-2">
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-200/80 bg-white/82 text-gray-500 transition-colors hover:border-accent-pink/30 hover:text-accent-pink dark:border-white/10 dark:bg-white/5 dark:text-light-bg/55"
-                aria-label="Toggle theme"
-              >
-                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </button>
-
-              <Link to="/coming-soon" className="btn-secondary hidden px-4 py-3 text-xs sm:inline-flex">
-                Request beta
+              <Link to="/sign-in" className="btn-secondary hidden px-4 py-3 text-xs sm:inline-flex">
+                Sign in
               </Link>
-              <Link to="/coming-soon" className="btn-primary px-5 py-3 text-xs">
-                Open platform
+              <Link to="/sign-up" className="btn-primary px-5 py-3 text-xs">
+                Sign up
               </Link>
 
               <button
@@ -267,11 +256,11 @@ export default function Header() {
             </div>
 
             <div className="mt-8 border-t border-gray-200 pt-6 dark:border-white/10">
-              <Link to="/coming-soon" onClick={() => setMobileOpen(false)} className="btn-primary w-full justify-center">
-                Open platform
+              <Link to="/sign-up" onClick={() => setMobileOpen(false)} className="btn-primary w-full justify-center">
+                Sign up
               </Link>
-              <Link to="/coming-soon" onClick={() => setMobileOpen(false)} className="btn-secondary mt-3 w-full justify-center">
-                Request beta
+              <Link to="/sign-in" onClick={() => setMobileOpen(false)} className="btn-secondary mt-3 w-full justify-center">
+                Sign in
               </Link>
             </div>
           </aside>

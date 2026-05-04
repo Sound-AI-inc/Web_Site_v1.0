@@ -107,14 +107,6 @@ export default function ComingSoon() {
               </div>
             )}
 
-            <div className="mt-8 border-t border-gray-200 pt-6 dark:border-white/10">
-              <Link
-                to="/auth"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-accent-pink transition-colors hover:text-accent-cyan"
-              >
-                Preview the auth page
-              </Link>
-            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
 const Layout = lazy(() => import("./components/Layout"));
@@ -23,6 +23,7 @@ const Licenses = lazy(() => import("./pages/legal/Licenses"));
 const LegalInfo = lazy(() => import("./pages/legal/LegalInfo"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const Auth = lazy(() => import("./pages/Auth"));
+const Onboarding = lazy(() => import("./pages/Onboarding"));
 
 function RouteFallback() {
   return (
@@ -65,7 +66,10 @@ function App() {
             <Route path="/legal/info" element={<LegalInfo />} />
 
             <Route path="/coming-soon" element={<ComingSoon />} />
-            <Route path="/auth" element={<Auth />} />
+            <Route path="/auth" element={<Navigate to="/sign-in" replace />} />
+            <Route path="/sign-in" element={<Auth />} />
+            <Route path="/sign-up" element={<Auth />} />
+            <Route path="/welcome" element={<Onboarding />} />
           </Route>
         </Routes>
       </Suspense>
