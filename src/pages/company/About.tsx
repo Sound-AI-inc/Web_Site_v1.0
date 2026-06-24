@@ -1,5 +1,15 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, AudioWaveform, Settings2, Music2, Layers, AlertTriangle, CheckCircle2, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  AudioWaveform,
+  FileAudio,
+  Settings2,
+  Music2,
+  Layers,
+  AlertTriangle,
+  CheckCircle2,
+  Sparkles,
+} from "lucide-react";
 import SectionHeading from "../../components/SectionHeading";
 
 const benefits = [
@@ -50,10 +60,10 @@ export default function About() {
               language prompts, purpose-built for real production workflows in professional DAWs.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/products/users" className="btn-primary">
-                Start Creating <ArrowRight className="ml-2 h-4 w-4" />
+              <Link to="/waitlist" className="btn-primary">
+                Join Waitlist <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
-              <Link to="/about" className="btn-secondary">
+              <Link to="/waitlist" className="btn-secondary">
                 Request Beta Access
               </Link>
             </div>
@@ -113,7 +123,7 @@ export default function About() {
               <div className="h-12 w-px bg-gradient-to-b from-accent-pink to-accent-cyan" />
             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {[
                 { icon: AudioWaveform, label: "Audio Sample", format: ".wav / .flac", color: "text-accent-pink" },
                 { icon: Music2, label: "MIDI Pattern", format: ".mid", color: "text-accent-cyan" },

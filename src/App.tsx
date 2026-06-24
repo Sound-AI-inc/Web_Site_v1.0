@@ -1,9 +1,13 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
 const Layout = lazy(() => import("./components/Layout"));
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/company/About"));
+const ProductPhilosophy = lazy(() => import("./pages/product/Philosophy"));
+const Technology = lazy(() => import("./pages/Technology"));
+const Comparison = lazy(() => import("./pages/Comparison"));
+const Pricing = lazy(() => import("./pages/Pricing"));
 const Team = lazy(() => import("./pages/company/Team"));
 const Roadmap = lazy(() => import("./pages/company/Roadmap"));
 const Careers = lazy(() => import("./pages/company/Careers"));
@@ -22,8 +26,13 @@ const LegalCenter = lazy(() => import("./pages/legal/LegalCenter"));
 const Licenses = lazy(() => import("./pages/legal/Licenses"));
 const LegalInfo = lazy(() => import("./pages/legal/LegalInfo"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
-const Auth = lazy(() => import("./pages/Auth"));
-const Onboarding = lazy(() => import("./pages/Onboarding"));
+const AuthRedirect = lazy(() => import("./pages/AuthRedirect"));
+const Waitlist = lazy(() => import("./pages/Waitlist"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
+const UCProducers = lazy(() => import("./pages/use-cases/Producers"));
+const UCSoundDesign = lazy(() => import("./pages/use-cases/SoundDesign"));
+const UCGameAudio = lazy(() => import("./pages/use-cases/GameAudio"));
+const UCCreators = lazy(() => import("./pages/use-cases/Creators"));
 
 function RouteFallback() {
   return (
@@ -44,7 +53,15 @@ function App() {
             <Route path="/" element={<Home />} />
 
             <Route path="/about" element={<About />} />
+            <Route path="/product/philosophy" element={<ProductPhilosophy />} />
+            <Route path="/technology" element={<Technology />} />
+            <Route path="/comparison" element={<Comparison />} />
+            <Route path="/pricing" element={<Pricing />} />
             <Route path="/team" element={<Team />} />
+            <Route path="/use-cases/producers" element={<UCProducers />} />
+            <Route path="/use-cases/sound-design" element={<UCSoundDesign />} />
+            <Route path="/use-cases/game-audio" element={<UCGameAudio />} />
+            <Route path="/use-cases/creators" element={<UCCreators />} />
             <Route path="/roadmap" element={<Roadmap />} />
             <Route path="/careers" element={<Careers />} />
 
@@ -66,10 +83,12 @@ function App() {
             <Route path="/legal/info" element={<LegalInfo />} />
 
             <Route path="/coming-soon" element={<ComingSoon />} />
-            <Route path="/auth" element={<Navigate to="/sign-in" replace />} />
-            <Route path="/sign-in" element={<Auth />} />
-            <Route path="/sign-up" element={<Auth />} />
-            <Route path="/welcome" element={<Onboarding />} />
+            <Route path="/auth" element={<AuthRedirect />} />
+            <Route path="/waitlist" element={<Waitlist />} />
+            <Route path="/thank-you" element={<ThankYou />} />
+            <Route path="/sign-in" element={<AuthRedirect />} />
+            <Route path="/sign-up" element={<AuthRedirect />} />
+            <Route path="/welcome" element={<AuthRedirect />} />
           </Route>
         </Routes>
       </Suspense>
