@@ -2,19 +2,11 @@ import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   submitEarlyAccess,
+  INTERESTED_PLAN_OPTIONS,
   type EarlyAccessPayload,
-  type InterestedPlan,
   type RoleType,
 } from "../lib/earlyAccessService";
-import { supabaseConfigured } from "../lib/supabase";
 import { trackEvent } from "../lib/analytics";
-
-const PLANS: { value: InterestedPlan; label: string }[] = [
-  { value: "free", label: "Free" },
-  { value: "lite", label: "Lite" },
-  { value: "pro", label: "Pro" },
-  { value: "enterprise", label: "Enterprise" },
-];
 
 const ROLES: { value: RoleType; label: string }[] = [
   { value: "producer", label: "Producer / Creator" },
@@ -39,7 +31,7 @@ export default function EarlyAccessForm({ compact = false }: EarlyAccessFormProp
     profession: "",
     musicExperience: "",
     discoverySource: "",
-    interestedPlan: "free",
+    interestedPlan: "trial",
     roleType: "producer",
     consent: false,
     newsletter: false,
@@ -80,12 +72,6 @@ export default function EarlyAccessForm({ compact = false }: EarlyAccessFormProp
 
   return (
     <form onSubmit={onSubmit} className={compact ? "space-y-4" : "space-y-5"}>
-      {!supabaseConfigured() && (
-        <p className="rounded-xl border border-accent-light/40 bg-accent-light/10 px-4 py-3 text-xs font-codec text-text/70">
-          Supabase is not configured locally. Submissions are stored in your browser until production env vars are set.
-        </p>
-      )}
-
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block space-y-1.5">
           <span className="text-xs font-poppins font-medium uppercase tracking-wider text-text/50">First name</span>
@@ -144,7 +130,7 @@ export default function EarlyAccessForm({ compact = false }: EarlyAccessFormProp
       <fieldset className="space-y-2">
         <legend className="text-xs font-poppins font-medium uppercase tracking-wider text-text/50">Interested plan</legend>
         <div className="flex flex-wrap gap-2">
-          {PLANS.map((plan) => (
+          {INTERESTED_PLAN_OPTIONS.map((plan) => (
             <label
               key={plan.value}
               className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-codec transition ${

@@ -1,6 +1,7 @@
 import { getSupabase } from "./supabase";
+import { plans } from "../data/plans";
 
-export type InterestedPlan = "free" | "lite" | "pro" | "enterprise";
+export type InterestedPlan = (typeof plans)[number]["id"];
 export type RoleType = "producer" | "investor" | "developer" | "creator";
 
 export interface EarlyAccessPayload {
@@ -17,6 +18,11 @@ export interface EarlyAccessPayload {
   newsletter: boolean;
 }
 
+export const INTERESTED_PLAN_OPTIONS = plans.map((plan) => ({
+  value: plan.id as InterestedPlan,
+  label: plan.name,
+}));
+
 const LOCAL_KEY = "soundai:early-access-submitted";
 
 export function markEarlyAccessSubmitted(email: string) {
@@ -27,15 +33,29 @@ export function hasEarlyAccessSubmitted(email: string): boolean {
   return localStorage.getItem(LOCAL_KEY) === email;
 }
 
-export async function submitEarlyAccess(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string }> {
-  const supabase = getSupabase();
+async function submitViaApi(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string } | null> {
+  try {
+    const response = await fetch("/api/early-access", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = (await response.json()) as { ok?: boolean; error?: string };
+    if (response.ok && data.ok) return { ok: true };
+    if (response.status === 404) return null;
+    return { ok: false, error: data.error ?? "Submission failed." };
+  } catch {
+    return null;
+  }
+}
 
+async function submitViaSupabaseClient(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string }> {
+  const supabase = getSupabase();
   if (!supabase) {
     localStorage.setItem(
       `early-access:${payload.email}`,
       JSON.stringify({ ...payload, createdAt: new Date().toISOString() }),
     );
-    markEarlyAccessSubmitted(payload.email);
     return { ok: true };
   }
 
@@ -58,11 +78,23 @@ export async function submitEarlyAccess(payload: EarlyAccessPayload): Promise<{ 
     { onConflict: "email" },
   );
 
-  if (error) {
-    console.warn("[early-access]", error.message);
-    return { ok: false, error: error.message };
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+export async function submitEarlyAccess(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string }> {
+  const apiResult = await submitViaApi(payload);
+  if (apiResult?.ok) {
+    markEarlyAccessSubmitted(payload.email);
+    return { ok: true };
+  }
+  if (apiResult && !apiResult.ok) {
+    return apiResult;
   }
 
-  markEarlyAccessSubmitted(payload.email);
-  return { ok: true };
+  const clientResult = await submitViaSupabaseClient(payload);
+  if (clientResult.ok) {
+    markEarlyAccessSubmitted(payload.email);
+  }
+  return clientResult;
 }
