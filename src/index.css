@@ -83,37 +83,27 @@
   .btn-secondary {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-poppins font-semibold text-sm
       bg-white border shadow-[0_8px_24px_rgba(15,23,42,0.06)] transition-all duration-300
-      text-gray-700 border-gray-200 hover:border-accent-cyan/60 hover:text-accent-cyan
-      dark:bg-dark-bg
-      dark:text-light-bg dark:border-light-bg/20 dark:hover:border-accent-cyan/60 dark:hover:text-accent-cyan;
+      text-gray-700 border-gray-200 hover:border-accent-cyan/60 hover:text-accent-cyan;
   }
   .card {
     @apply backdrop-blur-sm rounded-xl p-6 transition-all duration-300
-      bg-white border border-gray-200 shadow-[0_12px_40px_rgba(15,23,42,0.06)] hover:border-accent-pink/30
-      dark:bg-dark-bg dark:border-white/10 dark:hover:border-accent-pink/20;
+      bg-white border border-gray-200 shadow-[0_12px_40px_rgba(15,23,42,0.06)] hover:border-accent-pink/30;
   }
   .tech-shell {
-    @apply relative overflow-hidden rounded-[28px] border border-gray-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.12)] backdrop-blur-xl
-      dark:border-white/10 dark:bg-dark-bg;
+    @apply relative overflow-hidden rounded-[28px] border border-gray-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.12)] backdrop-blur-xl;
   }
   .soundai-logo-mark {
     @apply object-contain;
   }
-  .dark .soundai-logo-mark {
-    filter: brightness(0) invert(1);
-  }
   .soft-panel {
-    @apply rounded-2xl border border-gray-200 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]
-      dark:border-white/10 dark:bg-dark-bg;
+    @apply rounded-2xl border border-gray-200 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)];
   }
   .soft-input {
     @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm text-gray-900 shadow-[0_6px_20px_rgba(15,23,42,0.04)]
-      placeholder:text-gray-400 transition-colors focus:outline-none focus:border-accent-pink/50 focus:ring-4 focus:ring-accent-pink/10
-      dark:border-white/10 dark:bg-dark-bg dark:text-light-bg dark:placeholder:text-light-bg/30;
+      placeholder:text-gray-400 transition-colors focus:outline-none focus:border-accent-pink/50 focus:ring-4 focus:ring-accent-pink/10;
   }
   .soft-badge {
-    @apply inline-flex items-center rounded-full border border-gray-200 bg-gray-100 px-2 py-0.5 text-xs text-gray-500
-      dark:border-white/10 dark:bg-dark-bg dark:text-light-bg/45;
+    @apply inline-flex items-center rounded-full border border-gray-200 bg-gray-100 px-2 py-0.5 text-xs text-gray-500;
   }
   .tech-grid {
     background-image:

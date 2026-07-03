@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { resourcesNav, solutionsNav, useCasesNav } from "../data/navigation";
 import { workspaceAuthUrl } from "../lib/siteConfig";
 
@@ -14,7 +13,6 @@ const megaMenus = [
 ];
 
 export default function Header() {
-  const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<OpenMenu>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -85,14 +83,6 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="rounded-lg p-2 text-text/60 transition hover:bg-white/60 hover:text-text"
-            aria-label="Toggle theme"
-          >
-            {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-          </button>
           <a
             href={workspaceAuthUrl("sign-in")}
             className="rounded-lg px-3 py-2 font-poppins text-sm font-medium text-text/80 transition hover:bg-white/60 hover:text-text"
