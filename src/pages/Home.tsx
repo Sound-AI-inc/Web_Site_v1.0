@@ -1,201 +1,114 @@
 import { Link } from "react-router-dom";
-import {
-  AudioWaveform,
-  Music2,
-  Settings2,
-  FileAudio,
-  ArrowRight,
-  Zap,
-  Shield,
-  Layers,
-  Terminal,
-  Users,
-  Globe,
-  Cpu,
-  Boxes,
-} from "lucide-react";
-import SectionHeading from "../components/SectionHeading";
+import { ArrowRight, Play } from "lucide-react";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "../lib/siteConfig";
+import EarlyAccessCTA from "../components/EarlyAccessCTA";
 
-const features = [
-  {
-    icon: AudioWaveform,
-    title: "Text-to-Audio Samples",
-    desc: "Generate production-ready audio samples from natural language prompts.",
-  },
-  {
-    icon: Music2,
-    title: "Editable MIDI",
-    desc: "AI-generated MIDI patterns you can edit, transpose, and arrange in your DAW.",
-  },
-  {
-    icon: Settings2,
-    title: "VST Preset Generation",
-    desc: "Synthesizer presets tailored to your prompt, ready for your plugin chain.",
-  },
-  {
-    icon: FileAudio,
-    title: "Multi-Format Sync",
-    desc: "Audio, MIDI, presets, and metadata synchronized from a single prompt.",
-  },
-  {
-    icon: Zap,
-    title: "One-Click DAW Export",
-    desc: "Export directly to Ableton, FL Studio, Logic Pro without conversion steps.",
-  },
-  {
-    icon: Shield,
-    title: "Rights-Aware Outputs",
-    desc: "Every asset includes compliance metadata and clearer usage provenance.",
-  },
-];
+const trustedBy = ["Universal Music", "Native Instruments", "Spitfire", "Ableton", "Focusrite", "Splice"];
 
-const useCases = [
+const faq = [
   {
-    icon: Users,
-    title: "For Creators",
-    desc: "Accelerate your workflow with AI-generated building blocks that fit your creative vision.",
-    to: "/products/users",
+    q: "What is SoundAI?",
+    a: "SoundAI is modular AI music infrastructure — a production layer for generating and governing audio samples, MIDI, and VST-oriented presets inside a unified workspace.",
   },
   {
-    icon: Terminal,
-    title: "For Developers",
-    desc: "Integrate AI audio generation into your apps, games, and platforms via the API.",
-    to: "/products/developers",
+    q: "Who is SoundAI for?",
+    a: "Producers, composers, sound designers, game audio teams, and creative studios who need export-grade assets — not consumer novelty generators.",
   },
   {
-    icon: Globe,
-    title: "For Partners",
-    desc: "Join the ecosystem of DAW makers, plugin developers, and audio institutions.",
-    to: "/products/partnerships",
+    q: "How does Early Access work?",
+    a: "Register once with your professional profile. Your identity syncs across billing, workspace authentication, and future Stripe subscriptions without duplicate records.",
+  },
+  {
+    q: "Which formats are supported?",
+    a: "Audio (WAV and delivery-ready exports), MIDI, VST preset workflows, project bundles, library organization, and governed export paths.",
   },
 ];
 
 export default function Home() {
+  usePageMeta({
+    title: "AI music production tools · Modular infrastructure",
+    description:
+      "SoundAI is modular AI music infrastructure for producers and studios. AI sample generation, MIDI generation AI, and production-grade workspace — join Early Access.",
+    path: "/",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: SITE_TAGLINE,
+      potentialAction: {
+        "@type": "RegisterAction",
+        target: `${SITE_URL}/early-access`,
+        name: "Join Early Access",
+      },
+    },
+  });
+
   return (
     <>
-      <section className="relative flex min-h-screen items-center overflow-hidden waveform-bg">
-        <div className="tech-grid absolute inset-0 opacity-50" />
-        <div className="absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-accent-pink/20 blur-3xl" />
-        <div className="absolute -right-32 bottom-1/4 h-96 w-96 rounded-full bg-accent-cyan/15 blur-3xl" />
-        <div className="signal-line absolute left-[8%] top-[22%] h-px w-[42%] opacity-70" />
-        <div className="signal-line absolute right-[10%] top-[58%] h-px w-[34%] opacity-60" />
-
-        <div className="container-max section-padding relative z-10">
-          <div className="grid items-start gap-10 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="max-w-4xl">
-              <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-pink/20 bg-accent-pink/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-pink">
-                AI-Powered Music Production
-              </span>
-              <h1 className="mb-6 font-poppins text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
-                SoundAI — modular AI music infrastructure for production-grade assets
-              </h1>
-              <p className="mb-8 max-w-2xl text-lg leading-relaxed text-gray-500 dark:text-light-bg/60 md:text-xl">
-                Modular AI audio generation system — synchronized samples, MIDI, presets, and metadata designed for DAW workflows and professional handoff.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/waitlist" className="btn-primary px-8 py-4 text-base">
-                  Join Waitlist
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-                <Link to="/product/philosophy" className="btn-secondary px-8 py-4 text-base">
-                  Product Philosophy
-                </Link>
-              </div>
-              <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-3">
-                {[
-                  { label: "Formats", value: "Audio · MIDI · Presets" },
-                  { label: "Output", value: "DAW-ready modular assets" },
-                  { label: "Surface", value: "API + Interface + Metadata" },
-                ].map((stat) => (
-                  <div key={stat.label} className="tech-shell px-4 py-4">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-light-bg/35">
-                      {stat.label}
-                    </div>
-                    <div className="mt-2 text-sm font-semibold text-gray-900 dark:text-light-bg">
-                      {stat.value}
-                    </div>
-                  </div>
-                ))}
-              </div>
+      {/* Hero */}
+      <section className="relative overflow-hidden pt-8 md:pt-16">
+        <div className="pointer-events-none absolute inset-0 tech-grid opacity-40" aria-hidden />
+        <div className="container-max section-padding relative">
+          <div className="max-w-4xl">
+            <p className="m-kicker animate-[fadeInUp_0.6s_ease-out]">Modular AI music infrastructure</p>
+            <h1 className="mt-5 font-poppins text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-[1.05] tracking-tight text-text animate-[fadeInUp_0.7s_ease-out]">
+              The future layer of{" "}
+              <span className="gradient-text">music production systems</span>
+            </h1>
+            <p className="mt-6 max-w-2xl font-codec text-lg leading-relaxed text-text/70 animate-[fadeInUp_0.8s_ease-out]">
+              Generate production-grade audio, MIDI, and presets inside a governed workspace — built for professionals, not novelty demos.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3 animate-[fadeInUp_0.9s_ease-out]">
+              <Link to="/early-access" className="btn-primary">
+                Join Early Access
+              </Link>
+              <button type="button" className="btn-secondary inline-flex items-center gap-2" aria-disabled="true">
+                <Play className="h-4 w-4" />
+                Watch Demo
+                <span className="soft-badge ml-1">Soon</span>
+              </button>
             </div>
+          </div>
 
-            <div className="tech-shell p-5 md:p-6">
-              <div className="mb-4 flex items-center justify-between gap-4">
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-pink">
-                    Live generation flow
-                  </div>
-                  <div className="mt-2 font-poppins text-xl font-semibold text-gray-900 dark:text-light-bg">
-                    Prompt to audio modular Outputs
-                  </div>
-                </div>
-                <div className="rounded-full border border-accent-cyan/20 bg-accent-cyan/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-cyan">
-                  Multi-surface
-                </div>
+          {/* Workspace preview mockup */}
+          <div className="mt-16 animate-[fadeInUp_1s_ease-out]">
+            <div className="m-preview-frame">
+              <div className="flex items-center gap-2 border-b border-text/8 px-4 py-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-primary/80" />
+                <span className="h-2.5 w-2.5 rounded-full bg-accent-light" />
+                <span className="h-2.5 w-2.5 rounded-full bg-text/15" />
+                <span className="ml-3 font-codec text-xs text-text/45">SoundAI Workspace · Preview</span>
               </div>
-
-              <div className="rounded-[22px] border border-gray-200/80 bg-[linear-gradient(180deg,rgba(248,250,252,0.88),rgba(255,255,255,0.96))] p-5 dark:border-white/10 dark:bg-dark-deeper/70">
-                <div className="mb-4 flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-accent-pink/60" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-400/60" />
-                  <div className="h-3 w-3 rounded-full bg-green-400/60" />
-                </div>
-                <div className="mb-3 font-mono text-sm text-gray-500 dark:text-light-bg/50">soundai generate</div>
-                <div className="mb-5 rounded-xl border border-gray-200 bg-white/88 p-4 dark:border-white/10 dark:bg-dark-bg/50">
-                  <p className="font-mono text-sm text-accent-cyan">
-                    &gt; "Dark ambient pad, 120 BPM, A minor, with analog warmth"
-                  </p>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {[
-                    {
-                      icon: Boxes,
-                      label: "Routing layer",
-                      desc: "Metadata selects compatible model, format, and output contract.",
-                    },
-                    {
-                      icon: Cpu,
-                      label: "Model execution",
-                      desc: "Audio, MIDI, and preset models run against the same prompt context.",
-                    },
-                    {
-                      icon: Layers,
-                      label: "Structured outputs",
-                      desc: "Waveforms, note events, patch parameters, and metadata stay synchronized.",
-                    },
-                    {
-                      icon: Terminal,
-                      label: "Production handoff",
-                      desc: "Assets are ready for export, editing, and API delivery.",
-                    },
-                  ].map((item) => (
-                    <div key={item.label} className="rounded-2xl border border-gray-200/80 bg-white/72 p-4 dark:border-white/10 dark:bg-dark-bg/45">
-                      <div className="mb-2 flex items-center gap-2">
-                        <item.icon className="h-4 w-4 text-accent-pink" />
-                        <p className="text-sm font-semibold text-gray-900 dark:text-light-bg">{item.label}</p>
+              <div className="grid gap-px bg-text/5 md:grid-cols-[220px_1fr_280px]">
+                <div className="hidden bg-white/80 p-4 md:block">
+                  <div className="space-y-2">
+                    {["Generator", "Library", "Projects", "Export"].map((item) => (
+                      <div key={item} className="rounded-lg bg-surface px-3 py-2 font-codec text-xs text-text/60">
+                        {item}
                       </div>
-                      <p className="text-sm leading-6 text-gray-500 dark:text-light-bg/55">{item.desc}</p>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-
-                <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
-                  {[
-                    { label: "Audio Sample", ext: ".wav" },
-                    { label: "MIDI Pattern", ext: ".mid" },
-                    { label: "VST Preset", ext: ".fxp" },
-                    { label: "Metadata", ext: ".json" },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="rounded-xl border border-accent-pink/10 bg-gray-50/90 p-3 text-center dark:bg-dark-bg/60"
-                    >
-                      <Layers className="mx-auto mb-2 h-5 w-5 text-accent-pink" />
-                      <p className="text-xs font-semibold text-gray-900 dark:text-light-bg">{item.label}</p>
-                      <p className="font-mono text-xs text-gray-400 dark:text-light-bg/40">{item.ext}</p>
-                    </div>
-                  ))}
+                <div className="min-h-[280px] bg-gradient-to-br from-white via-surface to-accent-light/20 p-6">
+                  <div className="signal-line mb-6 h-px w-full opacity-70" />
+                  <p className="font-poppins text-sm font-medium text-text/80">Prompt → Generate → Export</p>
+                  <div className="mt-6 space-y-3">
+                    {[72, 58, 86, 64].map((w, i) => (
+                      <div key={i} className="h-10 rounded-xl bg-white/70 shadow-flat-sm" style={{ width: `${w}%` }} />
+                    ))}
+                  </div>
+                </div>
+                <div className="hidden bg-white/80 p-4 lg:block">
+                  <p className="font-codec text-xs uppercase tracking-wider text-text/45">Artifacts</p>
+                  <div className="mt-3 space-y-2">
+                    {["Kick_01.wav", "Bass_MIDI.mid", "Lead_Preset.vst"].map((f) => (
+                      <div key={f} className="rounded-lg border border-text/8 px-3 py-2 font-codec text-xs text-text/65">
+                        {f}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -203,79 +116,192 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-padding waveform-bg">
-        <div className="container-max">
-          <SectionHeading
-            badge="Capabilities"
-            title="Modular AI for real production"
-            subtitle="Every asset is editable, exportable, and designed to integrate into professional workflows."
-          />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => (
-              <div key={feature.title} className="card group">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-accent-pink/10 transition-colors group-hover:bg-accent-pink/20">
-                  <feature.icon className="h-5 w-5 text-accent-pink" />
-                </div>
-                <h3 className="mb-2 font-poppins text-lg font-semibold">{feature.title}</h3>
-                <p className="text-sm leading-relaxed text-gray-500 dark:text-light-bg/50">{feature.desc}</p>
-              </div>
+      {/* Trusted by */}
+      <section className="border-y border-text/8 bg-white/40 py-10">
+        <div className="container-max px-4 sm:px-6 lg:px-8">
+          <p className="text-center font-codec text-xs uppercase tracking-[0.2em] text-text/40">Trusted by teams building the next generation of audio</p>
+          <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            {trustedBy.map((name) => (
+              <li key={name} className="font-poppins text-sm font-medium text-text/35">
+                {name}
+              </li>
             ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Why SoundAI */}
+      <section className="m-section">
+        <div className="container-max grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p className="m-kicker">Why SoundAI</p>
+            <h2 className="mt-3 font-poppins text-3xl font-semibold tracking-tight md:text-4xl">
+              Infrastructure, not another AI toy
+            </h2>
+          </div>
+          <div className="space-y-5 font-codec text-base leading-relaxed text-text/70">
+            <p>
+              Consumer AI music tools optimize for novelty. SoundAI optimizes for production systems: governed generation, export fidelity, and workspace-native workflows.
+            </p>
+            <p>
+              Every output — sample, MIDI, preset — is a first-class asset with metadata, project scope, and billing alignment. One identity from Early Access through workspace and subscriptions.
+            </p>
+            <Link to="/about" className="inline-flex items-center gap-1 font-poppins text-sm font-medium text-primary hover:underline">
+              Read our vision <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
 
-      <section className="section-padding">
+      {/* How it Works */}
+      <section className="m-section bg-white/50">
         <div className="container-max">
-          <SectionHeading
-            badge="Use Cases"
-            title="Built for every workflow"
-            subtitle="Whether you're a solo producer, a development team, or an enterprise partner."
-          />
-          <div className="grid gap-6 md:grid-cols-3">
-            {useCases.map((useCase) => (
-              <Link
-                key={useCase.title}
-                to={useCase.to}
-                className="card group flex flex-col hover:border-accent-cyan/20"
-              >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent-cyan/10 transition-colors group-hover:bg-accent-cyan/20">
-                  <useCase.icon className="h-6 w-6 text-accent-cyan" />
+          <p className="m-kicker">How it works</p>
+          <h2 className="mt-3 max-w-2xl font-poppins text-3xl font-semibold tracking-tight md:text-4xl">
+            From prompt to export-grade asset in three governed steps
+          </h2>
+          <ol className="mt-12 space-y-8 border-l border-primary/20 pl-8">
+            {[
+              ["Define intent", "Structured prompts, templates, and project context — not random generation."],
+              ["Generate & refine", "Multi-model orchestration produces audio, MIDI, or preset-oriented outputs inside the workspace."],
+              ["Organize & export", "Library, projects, credits, and DAW-ready export paths with team governance."],
+            ].map(([title, body], i) => (
+              <li key={title} className="relative">
+                <span className="absolute -left-[2.35rem] flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 font-poppins text-sm font-semibold text-primary">
+                  {i + 1}
+                </span>
+                <h3 className="font-poppins text-xl font-semibold text-text">{title}</h3>
+                <p className="mt-2 max-w-2xl font-codec text-text/70">{body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Feature overview — narrative */}
+      <section className="m-section">
+        <div className="container-max">
+          <p className="m-kicker">Feature overview</p>
+          <h2 className="mt-3 font-poppins text-3xl font-semibold tracking-tight md:text-4xl">Built for professional workflows</h2>
+          <div className="mt-10 divide-y divide-text/8">
+            {[
+              ["AI Generation", "Sample, MIDI, and preset generation with prompt governance.", "/features/ai-generation"],
+              ["Asset Library", "Versioned assets with favorites, search, and project scope.", "/features/asset-library"],
+              ["Prompt System", "Templates, history, and repeatable creative pipelines.", "/features/prompt-system"],
+              ["Export", "Delivery-ready outputs aligned to your DAW toolchain.", "/features/export"],
+            ].map(([title, desc, href]) => (
+              <Link key={href} to={href} className="group flex flex-col gap-2 py-6 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="font-poppins text-lg font-semibold text-text group-hover:text-primary">{title}</h3>
+                  <p className="mt-1 font-codec text-sm text-text/65">{desc}</p>
                 </div>
-                <h3 className="mb-2 font-poppins text-xl font-semibold">{useCase.title}</h3>
-                <p className="flex-1 text-sm leading-relaxed text-gray-500 dark:text-light-bg/50">{useCase.desc}</p>
-                <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-accent-pink">
-                  Learn More <ArrowRight className="h-4 w-4" />
-                </div>
+                <ArrowRight className="h-5 w-5 text-text/30 transition group-hover:translate-x-1 group-hover:text-primary" />
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section-padding">
+      {/* Formats */}
+      <section className="m-section bg-gradient-to-b from-accent-light/15 to-transparent">
         <div className="container-max">
-          <div className="tech-shell border-none bg-[linear-gradient(135deg,rgba(255,60,130,0.12),rgba(161,231,238,0.16),rgba(255,255,255,0.92))] p-10 text-center md:p-16">
-            <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-accent-pink/10 blur-3xl" />
-            <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-accent-cyan/10 blur-3xl" />
-            <div className="relative z-10">
-              <h2 className="mb-4 font-poppins text-3xl font-bold md:text-4xl">
-                Ready to evaluate SoundAI?
-              </h2>
-              <p className="mx-auto mb-8 max-w-xl text-gray-500 dark:text-light-bg/60">
-                Request early access to the waitlist — indicate your role and use case so we can route follow-ups appropriately.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link to="/waitlist" className="btn-primary px-8 py-4 text-base">
-                  Join Waitlist
-                </Link>
-                <Link to="/product/philosophy" className="btn-secondary px-8 py-4 text-base">
-                  Learn More
-                </Link>
-              </div>
-            </div>
+          <p className="m-kicker">Supported formats</p>
+          <h2 className="mt-3 font-poppins text-3xl font-semibold tracking-tight">Every output type production teams expect</h2>
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {["Audio", "MIDI", "VST", "Projects", "Library", "Export"].map((format) => (
+              <li key={format} className="rounded-2xl border border-text/8 bg-white/60 px-5 py-4 font-poppins font-medium text-text backdrop-blur-sm">
+                {format}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Integrations + Roadmap */}
+      <section className="m-section">
+        <div className="container-max grid gap-12 lg:grid-cols-2">
+          <div>
+            <p className="m-kicker">Integrations</p>
+            <h2 className="mt-3 font-poppins text-2xl font-semibold">Connect to your toolchain</h2>
+            <p className="mt-4 font-codec text-text/70">
+              DAW export paths, API access, and workspace authentication via Supabase — with Stripe billing synchronization on the roadmap.
+            </p>
+            <Link to="/features/integrations" className="mt-4 inline-flex items-center gap-1 font-poppins text-sm font-medium text-primary">
+              Explore integrations <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div>
+            <p className="m-kicker">Roadmap</p>
+            <h2 className="mt-3 font-poppins text-2xl font-semibold">High-level direction</h2>
+            <ul className="mt-4 space-y-3 font-codec text-sm text-text/70">
+              <li>Production workspace launch with credits and billing sync</li>
+              <li>Team collaboration and shared libraries</li>
+              <li>Enterprise governance and API expansion</li>
+            </ul>
+            <Link to="/roadmap" className="mt-4 inline-flex items-center gap-1 font-poppins text-sm font-medium text-primary">
+              Full roadmap <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
+
+      {/* Testimonials placeholder */}
+      <section className="m-section border-y border-text/8 bg-white/40">
+        <div className="container-max text-center">
+          <p className="m-kicker">Testimonials</p>
+          <blockquote className="mx-auto mt-6 max-w-3xl font-codec text-xl leading-relaxed text-text/75">
+            “SoundAI treats AI generation as infrastructure — the way serious studios actually work.”
+          </blockquote>
+          <p className="mt-4 font-poppins text-sm text-text/45">Early Access partner · Placeholder</p>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="m-section">
+        <div className="container-max max-w-3xl">
+          <p className="m-kicker">FAQ</p>
+          <h2 className="mt-3 font-poppins text-3xl font-semibold">Common questions</h2>
+          <dl className="mt-10 space-y-8">
+            {faq.map((item) => (
+              <div key={item.q}>
+                <dt className="font-poppins text-lg font-semibold text-text">{item.q}</dt>
+                <dd className="mt-2 font-codec text-text/70">{item.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* Blog preview */}
+      <section className="m-section bg-white/50">
+        <div className="container-max flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="m-kicker">Latest updates</p>
+            <h2 className="mt-3 font-poppins text-3xl font-semibold">From the SoundAI journal</h2>
+          </div>
+          <Link to="/resources/blog" className="font-poppins text-sm font-medium text-primary">
+            View all posts →
+          </Link>
+        </div>
+        <div className="container-max mt-8 grid gap-4 md:grid-cols-3">
+          {[
+            ["Building modular AI music OS", "Infrastructure thinking for production teams."],
+            ["MIDI generation AI at scale", "Governed outputs for DAW-native workflows."],
+            ["Early Access infrastructure", "One identity across marketing, billing, and workspace."],
+          ].map(([title, excerpt]) => (
+            <Link
+              key={title}
+              to="/resources/blog"
+              className="rounded-2xl border border-text/8 bg-white/70 p-6 transition hover:border-primary/25"
+            >
+              <h3 className="font-poppins font-semibold text-text">{title}</h3>
+              <p className="mt-2 font-codec text-sm text-text/65">{excerpt}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <EarlyAccessCTA />
     </>
   );
 }

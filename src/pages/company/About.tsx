@@ -1,155 +1,70 @@
 import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  AudioWaveform,
-  FileAudio,
-  Settings2,
-  Music2,
-  Layers,
-  AlertTriangle,
-  CheckCircle2,
-  Sparkles,
-} from "lucide-react";
-import SectionHeading from "../../components/SectionHeading";
-
-const benefits = [
-  {
-    icon: CheckCircle2,
-    title: "Editable & Modular",
-    desc: "Every generated asset can be modified, layered, and rearranged inside your DAW.",
-  },
-  {
-    icon: CheckCircle2,
-    title: "DAW-Native Export",
-    desc: "Direct export to Ableton, FL Studio, and Logic Pro without extra conversion steps.",
-  },
-  {
-    icon: CheckCircle2,
-    title: "Synchronized Assets",
-    desc: "Audio, MIDI, and presets stay aligned from a single prompt direction.",
-  },
-  {
-    icon: CheckCircle2,
-    title: "Clear Rights Context",
-    desc: "Every generated asset ships with clearer usage and origin signals.",
-  },
-];
-
-const constraints = [
-  "Full AI-generated tracks still create legal and copyright ambiguity",
-  "Complete songs remove the editability producers expect",
-  "Monolithic outputs do not fit existing DAW workflows well",
-  "Quality control becomes harder when the whole track arrives at once",
-];
+import { usePageMeta } from "../../hooks/usePageMeta";
+import { SITE_NAME, SITE_URL } from "../../lib/siteConfig";
+import EarlyAccessCTA from "../../components/EarlyAccessCTA";
 
 export default function About() {
+  usePageMeta({
+    title: "About & Vision — Modular AI music OS",
+    description:
+      "Why SoundAI exists: building the modular AI music operating system for production-grade workflows and AI-assisted creation.",
+    path: "/about",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      name: "About SoundAI",
+      url: `${SITE_URL}/about`,
+      isPartOf: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    },
+  });
+
   return (
-    <>
-      <section className="section-padding waveform-bg relative overflow-hidden">
-        <div className="absolute -right-32 top-1/4 h-96 w-96 rounded-full bg-accent-pink/15 blur-3xl" />
-        <div className="container-max relative z-10">
-          <div className="max-w-3xl">
-            <span className="mb-6 inline-block rounded-full border border-accent-pink/20 bg-accent-pink/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-pink">
-              About SoundAI
-            </span>
-            <h1 className="mb-6 font-poppins text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl">
-              Accelerate Music Production with <span className="gradient-text">Modular AI</span>
-            </h1>
-            <p className="mb-8 text-lg leading-relaxed text-gray-500 dark:text-light-bg/60 md:text-xl">
-              SoundAI generates editable samples, MIDI patterns, and VST presets from natural
-              language prompts, purpose-built for real production workflows in professional DAWs.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/waitlist" className="btn-primary">
-                Join Waitlist <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-              <Link to="/waitlist" className="btn-secondary">
-                Request Beta Access
-              </Link>
-            </div>
-          </div>
+    <article>
+      <header className="m-hero-compact">
+        <div className="container-max max-w-4xl">
+          <p className="m-kicker">About / Vision</p>
+          <h1 className="mt-4 font-poppins text-4xl font-semibold tracking-tight md:text-5xl">
+            Why SoundAI exists
+          </h1>
+          <p className="mt-6 font-codec text-lg leading-relaxed text-text/70">
+            Music production is a systems problem. Generators optimize for novelty; studios need infrastructure — governed assets, export fidelity, and identity across billing and workspace.
+          </p>
         </div>
-      </section>
+      </header>
 
-      <section className="section-padding">
-        <div className="container-max">
-          <div className="grid items-start gap-12 lg:grid-cols-2">
-            <div>
-              <SectionHeading badge="Why Modular?" title="The Problem with Full-Track AI" centered={false} />
-              <div className="space-y-4">
-                {constraints.map((item) => (
-                  <div key={item} className="flex items-start gap-3">
-                    <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-400" />
-                    <p className="text-sm text-gray-500 dark:text-light-bg/60">{item}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <SectionHeading badge="Our Approach" title="Modular Assets, Full Control" centered={false} />
-              <div className="space-y-4">
-                {benefits.map((benefit) => (
-                  <div key={benefit.title} className="flex items-start gap-3">
-                    <benefit.icon className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-400" />
-                    <div>
-                      <h4 className="font-poppins text-sm font-semibold">{benefit.title}</h4>
-                      <p className="text-sm text-gray-500 dark:text-light-bg/50">{benefit.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="m-section space-y-16">
+        <section className="container-max max-w-3xl">
+          <h2 className="font-poppins text-2xl font-semibold">A modular AI music OS</h2>
+          <p className="mt-4 font-codec leading-relaxed text-text/70">
+            SoundAI composes audio samples, MIDI, and VST-oriented presets as first-class outputs inside a unified workspace. Each asset carries metadata, project scope, and billing alignment — not disposable clips from a black box.
+          </p>
+          <p className="mt-4 font-codec leading-relaxed text-text/70">
+            The platform is designed as layers: generation, organization, export, and future collaboration — analogous to how modern infrastructure companies ship composable primitives rather than monolithic applications.
+          </p>
+        </section>
 
-      <section className="section-padding waveform-bg">
-        <div className="container-max">
-          <SectionHeading
-            badge="How It Works"
-            title="One Prompt, Multi-Format Output"
-            subtitle="A single natural language prompt generates synchronized, production-ready assets."
-          />
-          <div className="mx-auto max-w-4xl">
-            <div className="mb-6 rounded-xl border border-gray-200 bg-gray-100 p-6 text-center dark:border-white/5 dark:bg-dark-bg/60">
-              <Sparkles className="mx-auto mb-3 h-8 w-8 text-accent-pink" />
-              <p className="mb-1 font-poppins text-lg font-semibold">Natural Language Prompt</p>
-              <p className="text-sm italic text-gray-400 dark:text-light-bg/40">
-                "Warm analog pad, 90 BPM, C minor, with slow attack and ambient tail"
-              </p>
-            </div>
+        <section className="container-max max-w-3xl">
+          <h2 className="font-poppins text-2xl font-semibold">The future of AI-assisted production</h2>
+          <p className="mt-4 font-codec leading-relaxed text-text/70">
+            AI will not replace producers. It will augment production systems — accelerating iteration, reducing asset friction, and standardizing export paths. SoundAI targets that layer: the connective tissue between models, DAWs, and team governance.
+          </p>
+          <p className="mt-4 font-codec leading-relaxed text-text/70">
+            Early Access establishes a single user identity that propagates to workspace authentication, billing, credits, and future Stripe subscriptions. No duplicate records. No marketing-site silos.
+          </p>
+        </section>
 
-            <div className="mb-6 flex justify-center">
-              <div className="h-12 w-px bg-gradient-to-b from-accent-pink to-accent-cyan" />
-            </div>
+        <section className="container-max max-w-3xl">
+          <h2 className="font-poppins text-2xl font-semibold">Category positioning</h2>
+          <p className="mt-4 font-codec leading-relaxed text-text/70">
+            We are not building a consumer AI music toy. SoundAI is infrastructure for professionals — producers, composers, sound designers, and creative studios — who require production-grade outputs and accountable workflows.
+          </p>
+          <Link to="/technology" className="mt-6 inline-block font-poppins text-sm font-medium text-primary hover:underline">
+            Explore technology →
+          </Link>
+        </section>
+      </div>
 
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {[
-                { icon: AudioWaveform, label: "Audio Sample", format: ".wav / .flac", color: "text-accent-pink" },
-                { icon: Music2, label: "MIDI Pattern", format: ".mid", color: "text-accent-cyan" },
-                { icon: Settings2, label: "VST Preset", format: ".fxp / .vstpreset", color: "text-purple-400" },
-              ].map((item) => (
-                <div key={item.label} className="card text-center">
-                  <item.icon className={`mx-auto mb-3 h-8 w-8 ${item.color}`} />
-                  <h4 className="mb-1 font-poppins text-sm font-semibold">{item.label}</h4>
-                  <p className="font-mono text-xs text-gray-400 dark:text-light-bg/40">{item.format}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 flex items-start gap-3 rounded-xl border border-accent-cyan/10 bg-accent-cyan/5 p-4">
-              <Layers className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent-cyan" />
-              <div>
-                <h4 className="font-poppins text-sm font-semibold text-accent-cyan">Asset Synchronization</h4>
-                <p className="text-sm text-gray-500 dark:text-light-bg/50">
-                  All outputs share BPM, key, scale, and timing data, ensuring clean alignment
-                  when loaded into your DAW project.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+      <EarlyAccessCTA title="Invest in your production stack early" subtitle="Join Early Access before production launch. Priority onboarding for qualified teams." />
+    </article>
   );
 }

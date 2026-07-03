@@ -139,3 +139,20 @@
     transform: translateY(0) scale(1);
   }
 }
+
+/* Marketing v2 layout primitives */
+.m-kicker {
+  @apply font-poppins text-xs font-semibold uppercase tracking-[0.18em] text-primary;
+}
+.m-section {
+  @apply section-padding;
+}
+.m-hero-compact {
+  @apply section-padding pb-8 md:pb-12;
+}
+.m-cta-panel {
+  @apply relative overflow-hidden rounded-[28px] border border-text/10 bg-gradient-to-br from-white via-surface to-accent-light/20 p-8 md:p-12;
+}
+.m-preview-frame {
+  @apply overflow-hidden rounded-[24px] border border-text/10 bg-white/80 shadow-[0_32px_80px_rgba(21,20,20,0.08)] backdrop-blur-md;
+}
