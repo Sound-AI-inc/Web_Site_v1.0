@@ -3,6 +3,7 @@ import { ArrowRight, Play } from "lucide-react";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "../lib/siteConfig";
 import EarlyAccessCTA from "../components/EarlyAccessCTA";
+import WorkspaceGenerationDemo from "../components/WorkspaceGenerationDemo";
 
 const trustedBy = ["Universal Music", "Native Instruments", "Spitfire", "Ableton", "Focusrite", "Splice"];
 
@@ -72,46 +73,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Workspace preview mockup */}
+          {/* Workspace generation demo */}
           <div className="mt-16 animate-[fadeInUp_1s_ease-out]">
-            <div className="m-preview-frame">
-              <div className="flex items-center gap-2 border-b border-text/8 px-4 py-3">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary/80" />
-                <span className="h-2.5 w-2.5 rounded-full bg-accent-light" />
-                <span className="h-2.5 w-2.5 rounded-full bg-text/15" />
-                <span className="ml-3 font-codec text-xs text-text/45">SoundAI Workspace · Preview</span>
-              </div>
-              <div className="grid gap-px bg-text/5 md:grid-cols-[220px_1fr_280px]">
-                <div className="hidden bg-white/80 p-4 md:block">
-                  <div className="space-y-2">
-                    {["Generator", "Library", "Projects", "Export"].map((item) => (
-                      <div key={item} className="rounded-lg bg-surface px-3 py-2 font-codec text-xs text-text/60">
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="min-h-[280px] bg-gradient-to-br from-white via-surface to-accent-light/20 p-6">
-                  <div className="signal-line mb-6 h-px w-full opacity-70" />
-                  <p className="font-poppins text-sm font-medium text-text/80">Prompt → Generate → Export</p>
-                  <div className="mt-6 space-y-3">
-                    {[72, 58, 86, 64].map((w, i) => (
-                      <div key={i} className="h-10 rounded-xl bg-white/70 shadow-flat-sm" style={{ width: `${w}%` }} />
-                    ))}
-                  </div>
-                </div>
-                <div className="hidden bg-white/80 p-4 lg:block">
-                  <p className="font-codec text-xs uppercase tracking-wider text-text/45">Artifacts</p>
-                  <div className="mt-3 space-y-2">
-                    {["Kick_01.wav", "Bass_MIDI.mid", "Lead_Preset.vst"].map((f) => (
-                      <div key={f} className="rounded-lg border border-text/8 px-3 py-2 font-codec text-xs text-text/65">
-                        {f}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <WorkspaceGenerationDemo />
           </div>
         </div>
       </section>

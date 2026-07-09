@@ -27,6 +27,7 @@ const LegalCenter = lazy(() => import("./pages/legal/LegalCenter"));
 const Licenses = lazy(() => import("./pages/legal/Licenses"));
 const LegalInfo = lazy(() => import("./pages/legal/LegalInfo"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
+const DevelopingProcess = lazy(() => import("./pages/DevelopingProcess"));
 const AuthRedirect = lazy(() => import("./pages/AuthRedirect"));
 const WaitlistRedirect = lazy(() => import("./pages/WaitlistRedirect"));
 const EarlyAccess = lazy(() => import("./pages/EarlyAccess"));
@@ -89,12 +90,13 @@ function App() {
             <Route path="/legal/info" element={<LegalInfo />} />
 
             <Route path="/coming-soon" element={<ComingSoon />} />
+            <Route path="/developing-process" element={<DevelopingProcess />} />
             <Route path="/auth" element={<AuthRedirect />} />
             <Route path="/waitlist" element={<WaitlistRedirect />} />
             <Route path="/early-access" element={<EarlyAccess />} />
             <Route path="/thank-you" element={<ThankYou />} />
-            <Route path="/sign-in" element={<AuthRedirect />} />
-            <Route path="/sign-up" element={<AuthRedirect />} />
+            <Route path="/sign-in" element={<Navigate to="/developing-process" replace />} />
+            <Route path="/sign-up" element={<Navigate to="/developing-process" replace />} />
             <Route path="/welcome" element={<AuthRedirect />} />
 
             {marketingPages.map((page) => (

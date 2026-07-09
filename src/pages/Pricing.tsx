@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { usePageMeta } from "../hooks/usePageMeta";
-import { SITE_NAME, SITE_URL, workspaceAuthUrl } from "../lib/siteConfig";
+import { SITE_NAME, SITE_URL } from "../lib/siteConfig";
 import BillingCard from "../components/pricing/BillingCard";
 import BillingComparisonTable from "../components/pricing/BillingComparisonTable";
 import { plans } from "../data/plans";
@@ -45,9 +46,9 @@ export default function Pricing() {
               <div className="app-section-title mb-2">Current plan</div>
               <div className="font-poppins text-xl font-semibold text-text">Standard</div>
               <p className="app-meta mt-1">Renews on May 14</p>
-              <a href={workspaceAuthUrl("sign-in")} className="app-btn-ghost mt-4 inline-flex h-9 w-full items-center justify-center">
+              <Link to="/developing-process" className="app-btn-ghost mt-4 inline-flex h-9 w-full items-center justify-center">
                 Manage plan
-              </a>
+              </Link>
             </div>
             <div className="rounded-card border border-text/10 bg-white p-5 shadow-flat-sm md:col-span-2">
               <div className="app-section-title mb-2">Credits this month</div>

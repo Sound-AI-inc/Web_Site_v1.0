@@ -43,22 +43,44 @@ function validatePayload(payload: EarlyAccessPayload): string | null {
   return null;
 }
 
+function sheetsConfigured(): boolean {
+  return Boolean(process.env.GOOGLE_SHEETS_WEBAPP_URL?.trim());
+}
+
 async function submitToGoogleSheet(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string }> {
-  const webappUrl = process.env.GOOGLE_SHEETS_WEBAPP_URL;
+  const webappUrl = process.env.GOOGLE_SHEETS_WEBAPP_URL?.trim();
   if (!webappUrl) return { ok: false, error: "Google Sheets web app URL is not configured." };
+
+  if (!webappUrl.includes("/exec")) {
+    return {
+      ok: false,
+      error: "GOOGLE_SHEETS_WEBAPP_URL must end with /exec (not /dev). Redeploy the Apps Script web app.",
+    };
+  }
 
   const response = await fetch(webappUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
+    redirect: "follow",
   });
 
-  const text = await response.text();
+  const text = (await response.text()).trim();
+
+  if (text.startsWith("<!DOCTYPE") || text.startsWith("<html")) {
+    return {
+      ok: false,
+      error:
+        "Google Apps Script returned an HTML page. Redeploy with access 'Anyone' and authorize the script via testAppendRow.",
+    };
+  }
+
   let data: { ok?: boolean; error?: string } = {};
   try {
     data = JSON.parse(text) as { ok?: boolean; error?: string };
   } catch {
     if (!response.ok) return { ok: false, error: text || "Google Sheets request failed." };
+    return { ok: true };
   }
 
   if (!response.ok || data.ok === false) {
@@ -109,22 +131,35 @@ export default async function handler(request: IncomingMessage, response: Server
       return;
     }
 
-    const sheetResult = await submitToGoogleSheet(payload);
-    const supabaseResult = await submitToSupabase(payload);
+    const useSheets = sheetsConfigured();
 
-    if (sheetResult.ok) {
-      json(response, 200, { ok: true, stored: "google_sheets" });
+    if (useSheets) {
+      const sheetResult = await submitToGoogleSheet(payload);
+      if (!sheetResult.ok) {
+        json(response, 502, { ok: false, error: sheetResult.error });
+        return;
+      }
+
+      const supabaseResult = await submitToSupabase(payload);
+      json(response, 200, {
+        ok: true,
+        stored: "google_sheets",
+        supabaseSynced: supabaseResult.ok,
+        warning: supabaseResult.ok ? undefined : supabaseResult.error,
+      });
       return;
     }
 
+    const supabaseResult = await submitToSupabase(payload);
     if (supabaseResult.ok) {
-      json(response, 200, { ok: true, stored: "supabase", warning: sheetResult.error });
+      json(response, 200, { ok: true, stored: "supabase" });
       return;
     }
 
     json(response, 502, {
       ok: false,
-      error: sheetResult.error ?? supabaseResult.error ?? "Submission failed.",
+      error:
+        "No submission backend configured. Set GOOGLE_SHEETS_WEBAPP_URL on Vercel or configure Supabase service role.",
     });
   } catch (error) {
     json(response, 500, { ok: false, error: error instanceof Error ? error.message : "Unexpected error." });

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { resourcesNav, solutionsNav, useCasesNav } from "../data/navigation";
-import { workspaceAuthUrl } from "../lib/siteConfig";
+import { SoundAILogoLink } from "./SoundAILogo";
 
 type OpenMenu = "solutions" | "use-cases" | "resources" | null;
 
@@ -28,9 +28,7 @@ export default function Header() {
   return (
     <header ref={navRef} className="fixed inset-x-0 top-0 z-50 border-b border-text/5 bg-surface/80 backdrop-blur-xl">
       <div className="container-max flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2" aria-label="SoundAI home">
-          <img src="/logo SoundAI v1.5 (1).svg" alt="SoundAI" className="h-7 w-auto soundai-logo-mark" />
-        </Link>
+        <SoundAILogoLink />
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
           {megaMenus.map((menu) => (
@@ -83,12 +81,12 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <a
-            href={workspaceAuthUrl("sign-in")}
+          <Link
+            to="/developing-process"
             className="rounded-lg px-3 py-2 font-poppins text-sm font-medium text-text/80 transition hover:bg-white/60 hover:text-text"
           >
             Sign In
-          </a>
+          </Link>
           <Link to="/early-access" className="btn-primary !px-4 !py-2 !text-sm">
             Early Access
           </Link>
@@ -124,9 +122,9 @@ export default function Header() {
             <Link to="/pricing" className="font-poppins text-sm font-medium" onClick={() => setMobileOpen(false)}>
               Pricing
             </Link>
-            <a href={workspaceAuthUrl("sign-in")} className="font-poppins text-sm font-medium">
+            <Link to="/developing-process" className="font-poppins text-sm font-medium" onClick={() => setMobileOpen(false)}>
               Sign In
-            </a>
+            </Link>
             <Link to="/early-access" className="btn-primary text-center" onClick={() => setMobileOpen(false)}>
               Early Access
             </Link>

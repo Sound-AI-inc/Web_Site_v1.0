@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { featuresNav, legalFooter, productsFooter, resourcesFooter } from "../data/navigation";
-import { workspaceAuthUrl } from "../lib/siteConfig";
+import { SoundAILogoLink } from "./SoundAILogo";
 
 export default function Footer() {
   return (
@@ -8,9 +8,7 @@ export default function Footer() {
       <div className="container-max section-padding pb-10">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <Link to="/" className="inline-flex items-center gap-2">
-              <img src="/logo SoundAI v1.5 (1).svg" alt="SoundAI" className="h-8 w-auto soundai-logo-mark" />
-            </Link>
+            <SoundAILogoLink size="lg" />
             <p className="mt-4 max-w-sm font-codec text-sm leading-relaxed text-text/65">
               Modular AI music infrastructure for production-grade assets. The future layer of music production systems.
             </p>
@@ -18,9 +16,9 @@ export default function Footer() {
               <Link to="/early-access" className="btn-primary !px-4 !py-2 !text-sm">
                 Join Early Access
               </Link>
-              <a href={workspaceAuthUrl("sign-in")} className="btn-secondary !px-4 !py-2 !text-sm">
+              <Link to="/developing-process" className="btn-secondary !px-4 !py-2 !text-sm">
                 Workspace
-              </a>
+              </Link>
             </div>
           </div>
 

@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { Check, Sparkles } from "lucide-react";
 import type { Plan } from "../../data/plans";
-import { workspaceAuthUrl } from "../../lib/siteConfig";
 
 interface BillingCardProps {
   plan: Plan;
@@ -26,7 +25,7 @@ export default function BillingCard({ plan, current }: BillingCardProps) {
       ? "/support"
       : plan.id === "trial" && current
         ? undefined
-        : workspaceAuthUrl("sign-up");
+        : "/developing-process";
 
   return (
     <div className="flex h-full min-h-0 flex-col">
@@ -135,18 +134,12 @@ export default function BillingCard({ plan, current }: BillingCardProps) {
             Current plan
           </button>
         ) : ctaHref ? (
-          plan.id === "enterprise" ? (
-            <Link to={ctaHref} className="app-btn-ghost mt-auto h-10 shrink-0 text-center leading-10">
-              {plan.cta}
-            </Link>
-          ) : (
-            <a
-              href={ctaHref}
-              className={`mt-auto shrink-0 text-center ${isHighlight ? "app-btn-primary h-10 leading-10" : "app-btn-ghost h-10 leading-10"}`}
-            >
-              {plan.cta}
-            </a>
-          )
+          <Link
+            to={ctaHref}
+            className={`mt-auto shrink-0 text-center ${isHighlight ? "app-btn-primary h-10 leading-10" : "app-btn-ghost h-10 leading-10"}`}
+          >
+            {plan.cta}
+          </Link>
         ) : (
           <Link to="/early-access" className="app-btn-primary mt-auto h-10 shrink-0 text-center leading-10">
             Join Early Access
