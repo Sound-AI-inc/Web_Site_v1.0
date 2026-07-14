@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy:worker": "npm run build && npx --yes wrangler@4 deploy",
+    "worker:dev": "npx --yes wrangler@4 dev"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.3",

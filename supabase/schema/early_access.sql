@@ -33,11 +33,19 @@ create policy "Anyone can insert early access"
   to anon, authenticated
   with check (true);
 
+-- Service role (Worker) bypasses RLS. Anon upsert needs update on conflict.
+drop policy if exists "Anyone can update early access by email" on public.early_access;
+create policy "Anyone can update early access by email"
+  on public.early_access for update
+  to anon, authenticated
+  using (true)
+  with check (true);
+
 create policy "Users read own early access"
   on public.early_access for select
   to authenticated
   using (auth.uid() = user_id or email = auth.jwt() ->> 'email');
 
 grant usage on schema public to anon, authenticated;
-grant insert on public.early_access to anon, authenticated;
+grant insert, update on public.early_access to anon, authenticated;
 grant select on public.early_access to authenticated;

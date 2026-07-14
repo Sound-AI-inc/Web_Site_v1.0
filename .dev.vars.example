@@ -1,0 +1,5 @@
+# Copy to .dev.vars for local wrangler dev (never commit .dev.vars)
+SUPABASE_URL=https://xnjugeewwjclgsaynthi.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-server-only-service-role-key
+GOOGLE_SHEETS_WEBAPP_URL=
+ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173

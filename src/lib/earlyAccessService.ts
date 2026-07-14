@@ -1,4 +1,3 @@
-import { getSupabase } from "./supabase";
 import { plans } from "../data/plans";
 
 export type InterestedPlan = (typeof plans)[number]["id"];
@@ -25,6 +24,23 @@ export const INTERESTED_PLAN_OPTIONS = plans.map((plan) => ({
 
 const LOCAL_KEY = "soundai:early-access-submitted";
 
+/** Ordered endpoints — same-origin first, then Cloudflare Worker. */
+function apiEndpoints(): string[] {
+  const configured = (import.meta.env.VITE_EARLY_ACCESS_API_URL as string | undefined)?.trim();
+  const worker =
+    (import.meta.env.VITE_WORKER_URL as string | undefined)?.replace(/\/$/, "") ??
+    "https://website.soundai-inc.workers.dev";
+
+  const list = [
+    configured,
+    "/early-access",
+    "/api/early-access",
+    `${worker}/early-access`,
+  ].filter(Boolean) as string[];
+
+  return [...new Set(list)];
+}
+
 export function markEarlyAccessSubmitted(email: string) {
   localStorage.setItem(LOCAL_KEY, email);
 }
@@ -33,56 +49,66 @@ export function hasEarlyAccessSubmitted(email: string): boolean {
   return localStorage.getItem(LOCAL_KEY) === email;
 }
 
-async function submitViaApi(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string } | null> {
-  try {
-    const response = await fetch("/api/early-access", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = (await response.json()) as { ok?: boolean; error?: string };
-    if (response.ok && data.ok) return { ok: true };
-    if (response.status === 404) return null;
-    return { ok: false, error: data.error ?? "Submission failed." };
-  } catch {
-    return null;
-  }
+interface ApiResponse {
+  success?: boolean;
+  ok?: boolean;
+  error?: string;
+  message?: string;
 }
 
-async function submitViaSupabaseClient(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string }> {
-  const supabase = getSupabase();
-  if (!supabase) {
-    localStorage.setItem(
-      `early-access:${payload.email}`,
-      JSON.stringify({ ...payload, createdAt: new Date().toISOString() }),
-    );
-    return { ok: true };
+async function submitViaApi(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string } | null> {
+  for (const endpoint of apiEndpoints()) {
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      // Static SPA / wrong host often returns HTML or 405 — try next endpoint.
+      const contentType = response.headers.get("content-type") ?? "";
+      if (response.status === 404 || response.status === 405) continue;
+      if (!contentType.includes("application/json")) {
+        if (!response.ok) continue;
+      }
+
+      let data: ApiResponse = {};
+      try {
+        data = (await response.json()) as ApiResponse;
+      } catch {
+        if (!response.ok) continue;
+        return { ok: false, error: `Submission failed (HTTP ${response.status}).` };
+      }
+
+      const succeeded = response.ok && (data.success === true || data.ok === true);
+      if (succeeded) return { ok: true };
+
+      return { ok: false, error: data.error ?? data.message ?? "Submission failed." };
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
+async function submitLocalFallback(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string }> {
+  if (import.meta.env.PROD) {
+    return {
+      ok: false,
+      error: "Unable to reach Early Access service. Please try again later.",
+    };
   }
 
-  const { error } = await supabase.from("early_access").upsert(
-    {
-      email: payload.email.toLowerCase().trim(),
-      first_name: payload.firstName.trim(),
-      last_name: payload.lastName.trim(),
-      country: payload.country.trim(),
-      profession: payload.profession.trim(),
-      music_experience: payload.musicExperience,
-      discovery_source: payload.discoverySource.trim(),
-      interested_plan: payload.interestedPlan,
-      role_type: payload.roleType,
-      consent: payload.consent,
-      newsletter: payload.newsletter,
-      status: "pending",
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "email" },
+  localStorage.setItem(
+    `early-access:${payload.email}`,
+    JSON.stringify({ ...payload, createdAt: new Date().toISOString() }),
   );
-
-  if (error) return { ok: false, error: error.message };
   return { ok: true };
 }
 
-export async function submitEarlyAccess(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string }> {
+export async function submitEarlyAccess(
+  payload: EarlyAccessPayload,
+): Promise<{ ok: boolean; error?: string }> {
   const apiResult = await submitViaApi(payload);
   if (apiResult?.ok) {
     markEarlyAccessSubmitted(payload.email);
@@ -92,9 +118,9 @@ export async function submitEarlyAccess(payload: EarlyAccessPayload): Promise<{ 
     return apiResult;
   }
 
-  const clientResult = await submitViaSupabaseClient(payload);
-  if (clientResult.ok) {
+  const fallback = await submitLocalFallback(payload);
+  if (fallback.ok) {
     markEarlyAccessSubmitted(payload.email);
   }
-  return clientResult;
+  return fallback;
 }
