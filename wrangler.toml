@@ -8,7 +8,7 @@ workers_dev = true
 directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
-run_worker_first = ["/early-access", "/api/early-access", "/early-access*", "/api/early-access*"]
+run_worker_first = ["/early-access*", "/api/early-access*"]
 
 # Secrets (do not put in this file):
 #   npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
