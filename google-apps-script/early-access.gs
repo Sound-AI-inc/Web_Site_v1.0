@@ -9,8 +9,11 @@
  * 4. Deploy → New deployment → Web app
  *    Execute as: Me | Who has access: Anyone
  * 5. Copy the Web App URL ending in /exec (NOT /dev)
- * 6. Vercel env: GOOGLE_SHEETS_WEBAPP_URL=<exec URL>
- * 7. Redeploy the marketing site on Vercel
+ * 6. Cloudflare: npx wrangler secret put GOOGLE_SHEETS_WEBAPP_URL
+ * 7. Redeploy Worker: npm run deploy:worker
+ *
+ * After updating HEADERS, either delete row 1 and let the script recreate,
+ * or manually rename "Country" → "Country of Residence" and add "Country Code".
  */
 
 const SPREADSHEET_ID = "1eoznqewvQkgnHLXNnrutP_cu2NFlKvAIJTEmsV0gvTU";
@@ -21,7 +24,8 @@ const HEADERS = [
   "First Name",
   "Last Name",
   "Email",
-  "Country",
+  "Country of Residence",
+  "Country Code",
   "Profession",
   "Music Experience",
   "Role Type",
@@ -50,6 +54,9 @@ function getOrCreateSheet_() {
     sheet.appendRow(HEADERS);
     sheet.setFrozenRows(1);
     sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight("bold");
+  } else if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEADERS);
+    sheet.setFrozenRows(1);
   }
   return sheet;
 }
@@ -62,6 +69,7 @@ function appendEarlyAccessRow_(body) {
     body.lastName || "",
     body.email || "",
     body.country || "",
+    body.countryCode || "",
     body.profession || "",
     body.musicExperience || "",
     body.roleType || "",
@@ -105,7 +113,8 @@ function testAppendRow() {
     firstName: "Test",
     lastName: "User",
     email: "test+" + new Date().getTime() + "@soundai.local",
-    country: "Test",
+    country: "United States",
+    countryCode: "US",
     profession: "QA",
     musicExperience: "professional",
     roleType: "producer",

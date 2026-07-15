@@ -7,6 +7,7 @@ import {
   type RoleType,
 } from "../lib/earlyAccessService";
 import { trackEvent } from "../lib/analytics";
+import CountrySelect from "./CountrySelect";
 
 const ROLES: { value: RoleType; label: string }[] = [
   { value: "producer", label: "Producer / Creator" },
@@ -28,6 +29,7 @@ export default function EarlyAccessForm({ compact = false }: EarlyAccessFormProp
     lastName: "",
     email: "",
     country: "",
+    countryCode: "",
     profession: "",
     musicExperience: "",
     discoverySource: "",
@@ -50,6 +52,11 @@ export default function EarlyAccessForm({ compact = false }: EarlyAccessFormProp
       return;
     }
 
+    if (!form.country || !form.countryCode) {
+      setError("Please select your Country of Residence from the list.");
+      return;
+    }
+
     setLoading(true);
     const result = await submitEarlyAccess(form);
     setLoading(false);
@@ -63,6 +70,7 @@ export default function EarlyAccessForm({ compact = false }: EarlyAccessFormProp
       plan: form.interestedPlan,
       role: form.roleType,
       source: form.discoverySource,
+      country: form.countryCode,
     });
     navigate("/thank-you", { state: { email: form.email } });
   }
@@ -89,10 +97,14 @@ export default function EarlyAccessForm({ compact = false }: EarlyAccessFormProp
       </label>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block space-y-1.5">
-          <span className="text-xs font-poppins font-medium uppercase tracking-wider text-text/50">Country</span>
-          <input required className={inputClass} value={form.country} onChange={(e) => update("country", e.target.value)} />
-        </label>
+        <CountrySelect
+          country={form.country}
+          countryCode={form.countryCode}
+          onChange={(country, countryCode) =>
+            setForm((prev) => ({ ...prev, country, countryCode }))
+          }
+          required
+        />
         <label className="block space-y-1.5">
           <span className="text-xs font-poppins font-medium uppercase tracking-wider text-text/50">Profession</span>
           <input required className={inputClass} value={form.profession} onChange={(e) => update("profession", e.target.value)} />

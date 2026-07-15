@@ -1,56 +1,111 @@
 # Early Access Pipeline — Diagnostic Report
 
-## Root cause of HTTP 405
+## Live 502 root cause (Jul 2026)
 
-`https://website.soundai-inc.workers.dev/early-access` was served by **Cloudflare static assets only**.
+`POST https://website.soundai-inc.workers.dev/early-access` returned:
 
-| Method  | Before fix | Cause |
-|---------|------------|--------|
-| GET     | 200 HTML   | SPA fallback (correct for page view) |
-| POST    | **405**    | Assets handler rejects non-GET/HEAD |
-| OPTIONS | **405**    | No CORS preflight handler |
+```json
+{"success":false,"error":"Supabase insert failed (404): {}"}
+```
 
-The marketing form POSTed to `/early-access`, but no Worker API ran before the asset layer.
+| Layer | Status | Finding |
+|-------|--------|---------|
+| Worker routing | OK | POST reaches Worker (not 405) |
+| Secrets present | Partial | Worker called Supabase (URL + key loaded) |
+| Supabase REST | **404** | `early_access` table/route missing or wrong project |
+| Google Sheets | Not called | Correct — only runs after successful Supabase write |
 
-## Fix
+**Fix:** Run `supabase/schema/early_access.sql` in the Supabase SQL Editor for project `xnjugeewwjclgsaynthi`, then redeploy the Worker with the **service_role** key (not anon).
 
-1. Added `worker/src/index.ts` + `wrangler.toml` with `run_worker_first` for `/early-access` and `/api/early-access`.
-2. **GET/HEAD** → SPA assets (marketing page).
-3. **POST/OPTIONS** → API: validate → **Supabase upsert** (source of truth) → **Google Sheets** (best-effort, retries). Sheets failures never fail the user flow after Supabase succeeds.
-4. Frontend tries same-origin, then `/api/early-access`, then `https://website.soundai-inc.workers.dev/early-access`.
+## Pipeline
 
-## Deploy (Cloudflare)
+```
+Frontend (CountrySelect ISO)
+  → Cloudflare Worker POST /early-access
+    → Validate secrets + payload
+    → Supabase UPSERT /rest/v1/early_access?on_conflict=email
+    → Google Sheets (best-effort; failures do not roll back Supabase)
+```
+
+## Worker diagnostics
+
+Every error response includes:
+
+- `success: false`
+- `error` — human-readable root cause
+- `subsystem` — `Worker` | `Validation` | `Supabase` | `Google Sheets`
+- `status` — upstream HTTP status when applicable
+- `details` / `stack` / `missing` — extra context
+
+Cloudflare logs every lifecycle step: `request_received` → `payload_parsed` → `validation_ok` → `supabase_request` / `supabase_response` → `sheets_*` → `success` | `error_response`.
+
+## Required secrets
+
+| Secret | Required | Notes |
+|--------|----------|-------|
+| `SUPABASE_URL` | Yes (var or secret) | Set in `wrangler.toml` `[vars]` |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Yes** | Must be JWT `role=service_role`. Worker rejects anon key. |
+| `GOOGLE_SHEETS_WEBAPP_URL` | Optional for success | `/exec` web app URL; missing → `sheetsWarning` |
 
 ```bash
-npm install
-npm run build
 npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 npx wrangler secret put GOOGLE_SHEETS_WEBAPP_URL
 npm run deploy:worker
 ```
 
-## Verify
+## Country of Residence
+
+- Searchable ISO 3166-1 dropdown (`CountrySelect`)
+- Payload: `country` (name) + `countryCode` (alpha-2)
+- Stored: `early_access.country`, `early_access.country_code`
+- Sheets columns: **Country of Residence**, **Country Code**
+
+## Test scenarios
+
+### 1. Successful registration
 
 ```bash
-curl.exe -i -X OPTIONS "https://website.soundai-inc.workers.dev/early-access" -H "Origin: https://web-site-v1-0.vercel.app" -H "Access-Control-Request-Method: POST"
-
 curl.exe -i -X POST "https://website.soundai-inc.workers.dev/early-access" ^
   -H "Content-Type: application/json" ^
-  -d "{\"firstName\":\"Test\",\"lastName\":\"User\",\"email\":\"test@example.com\",\"country\":\"US\",\"profession\":\"Producer\",\"musicExperience\":\"professional\",\"discoverySource\":\"curl\",\"interestedPlan\":\"trial\",\"roleType\":\"producer\",\"consent\":true,\"newsletter\":false}"
+  --data-binary "@tmp/test-payload.json"
 ```
 
-Expected: OPTIONS → 204, POST → 200 `{ "success": true, ... }` and a row in Supabase `early_access`.
+Expect: `200` `{ "success": true, "sheetsSynced": true|false }`
+
+### 2. Duplicate email (UPSERT)
+
+Same payload twice → `200` both times; one row in Supabase (updated).
+
+### 3. Invalid payload / missing fields
+
+Omit `countryCode` or `consent` → `400`, `subsystem: "Validation"`.
+
+### 4. Missing Worker secrets
+
+Unset `SUPABASE_SERVICE_ROLE_KEY` → `500`, `missing: ["SUPABASE_SERVICE_ROLE_KEY"]`.
+
+### 5. Anon key instead of service_role
+
+Worker detects JWT `role=anon` → descriptive `500` before calling Supabase.
+
+### 6. Supabase unavailable / table missing
+
+Expect: `502`, `subsystem: "Supabase"`, body/details with status `404` or network error. **Sheets not called.**
+
+### 7. Google Sheets unavailable
+
+Supabase succeeds → `200` with `sheetsSynced: false`, `sheetsWarning: "..."`. Row preserved in Supabase.
+
+## Deploy checklist
+
+1. [ ] Run `supabase/schema/early_access.sql` in Supabase SQL Editor
+2. [ ] `wrangler secret put SUPABASE_SERVICE_ROLE_KEY` (service_role only)
+3. [ ] `wrangler secret put GOOGLE_SHEETS_WEBAPP_URL` (optional)
+4. [ ] Update Google Apps Script from `google-apps-script/early-access.gs` + redeploy web app
+5. [ ] `npm run deploy:worker`
+6. [ ] Verify POST → 200 and row in Supabase + Sheets
 
 ## Security
 
-- Service role key: Worker secret only — never in frontend / git.
-- Google Sheets URL: Worker secret only.
-- Anon key may remain as `VITE_SUPABASE_ANON_KEY` for client features; Early Access writes only server-side.
-
-## Checklist after deploy
-
-- [ ] Worker reachable
-- [ ] POST accepted (not 405)
-- [ ] OPTIONS CORS ok
-- [ ] Supabase insert ok
-- [ ] Sheets append ok (or non-fatal warning logged)
+- Service role key: Worker / Vercel server env only — never `VITE_*` / git.
+- Frontend does not write to Supabase for Early Access in production.

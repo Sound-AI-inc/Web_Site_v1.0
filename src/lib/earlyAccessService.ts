@@ -7,7 +7,10 @@ export interface EarlyAccessPayload {
   firstName: string;
   lastName: string;
   email: string;
+  /** Display name, e.g. "United States" */
   country: string;
+  /** ISO 3166-1 alpha-2, e.g. "US" */
+  countryCode: string;
   profession: string;
   musicExperience: string;
   discoverySource: string;
@@ -54,6 +57,15 @@ interface ApiResponse {
   ok?: boolean;
   error?: string;
   message?: string;
+  subsystem?: string;
+  details?: unknown;
+  sheetsWarning?: string;
+}
+
+function formatApiError(data: ApiResponse, status: number): string {
+  const parts = [data.error ?? data.message ?? `Submission failed (HTTP ${status}).`];
+  if (data.subsystem) parts.push(`[${data.subsystem}]`);
+  return parts.join(" ");
 }
 
 async function submitViaApi(payload: EarlyAccessPayload): Promise<{ ok: boolean; error?: string } | null> {
@@ -83,7 +95,7 @@ async function submitViaApi(payload: EarlyAccessPayload): Promise<{ ok: boolean;
       const succeeded = response.ok && (data.success === true || data.ok === true);
       if (succeeded) return { ok: true };
 
-      return { ok: false, error: data.error ?? data.message ?? "Submission failed." };
+      return { ok: false, error: formatApiError(data, response.status) };
     } catch {
       continue;
     }

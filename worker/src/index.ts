@@ -1,12 +1,12 @@
 /**
  * Cloudflare Worker Early Access API
  * POST /early-access | POST /api/early-access
- * Flow: validate → Supabase (source of truth) → Google Sheets (best-effort mirror)
+ * Flow: validate secrets → parse → validate payload → Supabase upsert → Google Sheets (best-effort)
  */
 
 export interface Env {
-  SUPABASE_URL: string;
-  SUPABASE_SERVICE_ROLE_KEY: string;
+  SUPABASE_URL?: string;
+  SUPABASE_SERVICE_ROLE_KEY?: string;
   GOOGLE_SHEETS_WEBAPP_URL?: string;
   ALLOWED_ORIGINS?: string;
   ASSETS: Fetcher;
@@ -14,12 +14,14 @@ export interface Env {
 
 type InterestedPlan = "trial" | "standard" | "premium" | "enterprise";
 type RoleType = "producer" | "investor" | "developer" | "creator";
+type Subsystem = "Worker" | "Supabase" | "Google Sheets" | "Validation";
 
 interface EarlyAccessPayload {
   firstName: string;
   lastName: string;
   email: string;
   country: string;
+  countryCode: string;
   profession: string;
   musicExperience: string;
   discoverySource: string;
@@ -29,9 +31,20 @@ interface EarlyAccessPayload {
   newsletter: boolean;
 }
 
+interface ErrorBody {
+  success: false;
+  error: string;
+  subsystem: Subsystem;
+  status?: number;
+  details?: unknown;
+  stack?: string;
+  missing?: string[];
+}
+
 const PLANS = new Set(["trial", "standard", "premium", "enterprise"]);
 const ROLES = new Set(["producer", "investor", "developer", "creator"]);
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ISO_CODE_RE = /^[A-Z]{2}$/;
 
 function log(step: string, data: Record<string, unknown> = {}) {
   console.log(JSON.stringify({ ts: new Date().toISOString(), step, ...data }));
@@ -68,22 +81,86 @@ function jsonResponse(
   });
 }
 
+function errorResponse(
+  cors: Record<string, string>,
+  httpStatus: number,
+  body: ErrorBody,
+): Response {
+  log("error_response", {
+    subsystem: body.subsystem,
+    httpStatus,
+    error: body.error,
+    status: body.status,
+    missing: body.missing,
+  });
+  return jsonResponse(body, httpStatus, cors);
+}
+
+/** Decode JWT payload (no verify) to detect anon vs service_role keys. */
+function decodeJwtRole(token: string): string | null {
+  try {
+    const parts = token.split(".");
+    if (parts.length < 2) return null;
+    const payload = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = payload + "=".repeat((4 - (payload.length % 4)) % 4);
+    const json = JSON.parse(atob(padded)) as { role?: string };
+    return json.role ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function requireSecrets(env: Env): { ok: true } | { ok: false; missing: string[]; warnings: string[] } {
+  const missing: string[] = [];
+  const warnings: string[] = [];
+
+  if (!env.SUPABASE_URL?.trim()) missing.push("SUPABASE_URL");
+  if (!env.SUPABASE_SERVICE_ROLE_KEY?.trim()) missing.push("SUPABASE_SERVICE_ROLE_KEY");
+  // Sheets is optional for success path, but we report if absent for diagnostics.
+  if (!env.GOOGLE_SHEETS_WEBAPP_URL?.trim()) {
+    warnings.push("GOOGLE_SHEETS_WEBAPP_URL");
+  }
+
+  if (env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
+    const role = decodeJwtRole(env.SUPABASE_SERVICE_ROLE_KEY.trim());
+    if (role === "anon") {
+      return {
+        ok: false,
+        missing: [
+          "SUPABASE_SERVICE_ROLE_KEY (current value is the anon key — set the service_role key via `wrangler secret put SUPABASE_SERVICE_ROLE_KEY`)",
+        ],
+        warnings,
+      };
+    }
+    if (role && role !== "service_role") {
+      warnings.push(`SUPABASE_SERVICE_ROLE_KEY JWT role is "${role}" (expected service_role)`);
+    }
+  }
+
+  if (missing.length > 0) return { ok: false, missing, warnings };
+  return { ok: true };
+}
+
 function validatePayload(
   raw: unknown,
 ): { ok: true; payload: EarlyAccessPayload } | { ok: false; error: string } {
   if (!raw || typeof raw !== "object") return { ok: false, error: "Invalid JSON body." };
 
-  const p = raw as Partial<EarlyAccessPayload>;
+  const p = raw as Partial<EarlyAccessPayload> & { countryOfResidence?: string };
   const email = p.email?.trim().toLowerCase() ?? "";
   const firstName = p.firstName?.trim() ?? "";
   const lastName = p.lastName?.trim() ?? "";
-  const country = p.country?.trim() ?? "";
+  const country = (p.country ?? p.countryOfResidence)?.trim() ?? "";
+  const countryCode = (p.countryCode?.trim() ?? "").toUpperCase();
   const roleType = p.roleType;
   const interestedPlan = p.interestedPlan;
 
   if (!firstName || !lastName) return { ok: false, error: "First name and last name are required." };
   if (!email || !EMAIL_RE.test(email)) return { ok: false, error: "A valid email is required." };
-  if (!country) return { ok: false, error: "Country is required." };
+  if (!country) return { ok: false, error: "Country of Residence is required." };
+  if (!countryCode || !ISO_CODE_RE.test(countryCode)) {
+    return { ok: false, error: "A valid ISO country code (countryCode) is required." };
+  }
   if (!roleType || !ROLES.has(roleType)) return { ok: false, error: "A valid role is required." };
   if (!interestedPlan || !PLANS.has(interestedPlan)) return { ok: false, error: "A valid plan is required." };
   if (!p.consent) return { ok: false, error: "Consent is required." };
@@ -95,6 +172,7 @@ function validatePayload(
       lastName,
       email,
       country,
+      countryCode,
       profession: p.profession?.trim() ?? "",
       musicExperience: p.musicExperience?.trim() ?? "",
       discoverySource: p.discoverySource?.trim() ?? "",
@@ -116,101 +194,183 @@ async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs = 12_0
   }
 }
 
-async function insertSupabase(
+async function upsertSupabase(
   payload: EarlyAccessPayload,
   env: Env,
-): Promise<{ ok: true } | { ok: false; error: string }> {
-  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
-    return { ok: false, error: "Supabase is not configured on the Worker." };
-  }
+): Promise<
+  | { ok: true; status: number; body: string }
+  | { ok: false; status: number; body: string; error: string }
+> {
+  const base = env.SUPABASE_URL!.replace(/\/$/, "");
+  // Explicit on_conflict=email enables UPSERT with Prefer: resolution=merge-duplicates
+  const url = `${base}/rest/v1/early_access?on_conflict=email`;
+  const key = env.SUPABASE_SERVICE_ROLE_KEY!;
 
-  const url = `${env.SUPABASE_URL.replace(/\/$/, "")}/rest/v1/early_access`;
-  const response = await fetchWithTimeout(url, {
+  const row = {
+    email: payload.email,
+    first_name: payload.firstName,
+    last_name: payload.lastName,
+    country: payload.country,
+    country_code: payload.countryCode,
+    profession: payload.profession,
+    music_experience: payload.musicExperience,
+    discovery_source: payload.discoverySource,
+    interested_plan: payload.interestedPlan,
+    role_type: payload.roleType,
+    consent: payload.consent,
+    newsletter: payload.newsletter,
+    status: "pending",
+    updated_at: new Date().toISOString(),
+  };
+
+  log("supabase_request", {
+    url,
+    email: payload.email,
+    countryCode: payload.countryCode,
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
-      Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
-      Prefer: "resolution=merge-duplicates,return=minimal",
-    },
-    body: JSON.stringify({
-      email: payload.email,
-      first_name: payload.firstName,
-      last_name: payload.lastName,
-      country: payload.country,
-      profession: payload.profession,
-      music_experience: payload.musicExperience,
-      discovery_source: payload.discoverySource,
-      interested_plan: payload.interestedPlan,
-      role_type: payload.roleType,
-      consent: payload.consent,
-      newsletter: payload.newsletter,
-      status: "pending",
-      updated_at: new Date().toISOString(),
-    }),
   });
 
-  if (!response.ok) {
-    const text = await response.text();
-    return { ok: false, error: `Supabase insert failed (${response.status}): ${text.slice(0, 300)}` };
+  let response: Response;
+  try {
+    response = await fetchWithTimeout(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+        Prefer: "resolution=merge-duplicates,return=representation",
+      },
+      body: JSON.stringify(row),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    const stack = err instanceof Error ? err.stack : undefined;
+    log("supabase_network_error", { message, stack });
+    return {
+      ok: false,
+      status: 0,
+      body: "",
+      error: `Supabase network error: ${message}`,
+    };
   }
 
-  return { ok: true };
+  const body = await response.text();
+  log("supabase_response", { status: response.status, body: body.slice(0, 2000) });
+
+  if (!response.ok) {
+    let hint = "";
+    if (response.status === 404) {
+      hint =
+        " Table or route not found. Run supabase/schema/early_access.sql in the Supabase SQL Editor, then verify SUPABASE_URL.";
+    } else if (response.status === 401 || response.status === 403) {
+      hint = " Auth failed. Confirm SUPABASE_SERVICE_ROLE_KEY is the service_role key (not anon).";
+    } else if (response.status === 409) {
+      hint = " Conflict on email — unique constraint without upsert. Ensure on_conflict=email and Prefer: resolution=merge-duplicates.";
+    }
+
+    return {
+      ok: false,
+      status: response.status,
+      body,
+      error: `Supabase upsert failed (HTTP ${response.status}).${hint} Response: ${body.slice(0, 500) || "(empty)"}`,
+    };
+  }
+
+  return { ok: true, status: response.status, body };
 }
 
 async function appendGoogleSheetOnce(
   payload: EarlyAccessPayload,
   env: Env,
-): Promise<{ ok: true } | { ok: false; error: string }> {
-  const webappUrl = env.GOOGLE_SHEETS_WEBAPP_URL?.trim();
-  if (!webappUrl) return { ok: false, error: "Google Sheets web app URL is not configured." };
+): Promise<{ ok: true; status: number; body: string } | { ok: false; status: number; body: string; error: string }> {
+  const webappUrl = env.GOOGLE_SHEETS_WEBAPP_URL!.trim();
   if (!webappUrl.includes("/exec")) {
-    return { ok: false, error: "GOOGLE_SHEETS_WEBAPP_URL must use the /exec deployment URL." };
+    return {
+      ok: false,
+      status: 0,
+      body: "",
+      error: "GOOGLE_SHEETS_WEBAPP_URL must use the /exec deployment URL (not /dev).",
+    };
   }
 
-  const response = await fetchWithTimeout(
-    webappUrl,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      redirect: "follow",
-    },
-    15_000,
-  );
+  log("sheets_request", { email: payload.email });
+
+  let response: Response;
+  try {
+    response = await fetchWithTimeout(
+      webappUrl,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        redirect: "follow",
+      },
+      15_000,
+    );
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    return { ok: false, status: 0, body: "", error: `Google Sheets network error: ${message}` };
+  }
 
   const text = (await response.text()).trim();
+  log("sheets_response", { status: response.status, body: text.slice(0, 1000) });
+
   if (text.startsWith("<!DOCTYPE") || text.startsWith("<html")) {
-    return { ok: false, error: "Google Apps Script returned HTML (check deployment access: Anyone)." };
+    return {
+      ok: false,
+      status: response.status,
+      body: text.slice(0, 300),
+      error: "Google Apps Script returned HTML (check deployment: Execute as Me, Who has access: Anyone).",
+    };
   }
 
   try {
     const data = JSON.parse(text) as { ok?: boolean; error?: string };
     if (!response.ok || data.ok === false) {
-      return { ok: false, error: data.error ?? `Google Sheets HTTP ${response.status}` };
+      return {
+        ok: false,
+        status: response.status,
+        body: text,
+        error: data.error ?? `Google Sheets HTTP ${response.status}`,
+      };
     }
   } catch {
-    if (!response.ok) return { ok: false, error: text || `Google Sheets HTTP ${response.status}` };
+    if (!response.ok) {
+      return {
+        ok: false,
+        status: response.status,
+        body: text,
+        error: text || `Google Sheets HTTP ${response.status}`,
+      };
+    }
   }
 
-  return { ok: true };
+  return { ok: true, status: response.status, body: text };
 }
 
 async function appendGoogleSheetWithRetry(payload: EarlyAccessPayload, env: Env, retries = 2) {
-  let lastError = "Google Sheets append failed.";
+  let last: { ok: false; status: number; body: string; error: string } = {
+    ok: false,
+    status: 0,
+    body: "",
+    error: "Google Sheets append failed.",
+  };
+
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       const result = await appendGoogleSheetOnce(payload, env);
       if (result.ok) return result;
-      lastError = result.error;
-      log("sheets_retry", { attempt, error: lastError });
+      last = result;
+      log("sheets_retry", { attempt, error: result.error, status: result.status });
     } catch (err) {
-      lastError = err instanceof Error ? err.message : String(err);
-      log("sheets_retry", { attempt, error: lastError });
+      const message = err instanceof Error ? err.message : String(err);
+      const stack = err instanceof Error ? err.stack : undefined;
+      last = { ok: false, status: 0, body: "", error: message };
+      log("sheets_retry_exception", { attempt, message, stack });
     }
     if (attempt < retries) await new Promise((r) => setTimeout(r, 400 * (attempt + 1)));
   }
-  return { ok: false as const, error: lastError };
+  return last;
 }
 
 async function handleEarlyAccess(request: Request, env: Env): Promise<Response> {
@@ -223,50 +383,118 @@ async function handleEarlyAccess(request: Request, env: Env): Promise<Response> 
 
   if (request.method !== "POST") {
     log("method_rejected", { method: request.method });
-    return jsonResponse({ success: false, error: "Method not allowed. Use POST." }, 405, cors);
+    return errorResponse(cors, 405, {
+      success: false,
+      error: "Method not allowed. Use POST.",
+      subsystem: "Worker",
+      status: 405,
+    });
   }
 
   try {
-    log("request_received", { path: new URL(request.url).pathname });
+    log("request_received", {
+      path: new URL(request.url).pathname,
+      origin: request.headers.get("Origin"),
+      contentType: request.headers.get("Content-Type"),
+    });
+
+    const secrets = requireSecrets(env);
+    if (!secrets.ok) {
+      log("secrets_missing", { missing: secrets.missing, warnings: secrets.warnings });
+      return errorResponse(cors, 500, {
+        success: false,
+        error: `Missing or invalid Worker secrets: ${secrets.missing.join(", ")}`,
+        subsystem: "Worker",
+        missing: secrets.missing,
+        details: { warnings: secrets.warnings },
+      });
+    }
 
     let raw: unknown;
     try {
       raw = await request.json();
-    } catch {
-      log("validation_failed", { reason: "invalid_json" });
-      return jsonResponse({ success: false, error: "Invalid JSON body." }, 400, cors);
+      log("payload_parsed", { keys: raw && typeof raw === "object" ? Object.keys(raw as object) : [] });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      log("payload_parse_failed", { message });
+      return errorResponse(cors, 400, {
+        success: false,
+        error: "Invalid JSON body.",
+        subsystem: "Validation",
+        status: 400,
+        details: { message },
+      });
     }
 
     const validated = validatePayload(raw);
     if (!validated.ok) {
       log("validation_failed", { reason: validated.error });
-      return jsonResponse({ success: false, error: validated.error }, 400, cors);
+      return errorResponse(cors, 400, {
+        success: false,
+        error: validated.error,
+        subsystem: "Validation",
+        status: 400,
+      });
     }
 
     const payload = validated.payload;
-    log("validation_ok", { email: payload.email, plan: payload.interestedPlan, role: payload.roleType });
+    log("validation_ok", {
+      email: payload.email,
+      country: payload.country,
+      countryCode: payload.countryCode,
+      plan: payload.interestedPlan,
+      role: payload.roleType,
+    });
 
-    const supabaseResult = await insertSupabase(payload, env);
+    const supabaseResult = await upsertSupabase(payload, env);
     if (!supabaseResult.ok) {
-      log("supabase_failed", { error: supabaseResult.error, email: payload.email });
-      return jsonResponse({ success: false, error: supabaseResult.error }, 502, cors);
+      log("supabase_failed", {
+        email: payload.email,
+        status: supabaseResult.status,
+        body: supabaseResult.body.slice(0, 1000),
+        error: supabaseResult.error,
+      });
+      // Do NOT call Google Sheets when Supabase fails
+      return errorResponse(cors, 502, {
+        success: false,
+        error: supabaseResult.error,
+        subsystem: "Supabase",
+        status: supabaseResult.status,
+        details: {
+          body: supabaseResult.body.slice(0, 1000) || null,
+          endpoint: `${env.SUPABASE_URL?.replace(/\/$/, "")}/rest/v1/early_access?on_conflict=email`,
+        },
+      });
     }
 
-    log("supabase_ok", { email: payload.email });
+    log("supabase_ok", { email: payload.email, status: supabaseResult.status });
 
     let sheetsSynced = false;
     let sheetsWarning: string | undefined;
+    let sheetsDetails: Record<string, unknown> | undefined;
 
     if (env.GOOGLE_SHEETS_WEBAPP_URL?.trim()) {
       const sheetsResult = await appendGoogleSheetWithRetry(payload, env);
       if (sheetsResult.ok) {
         sheetsSynced = true;
-        log("sheets_ok", { email: payload.email });
+        log("sheets_ok", { email: payload.email, status: sheetsResult.status });
       } else {
+        // Preserve successful Supabase record — Sheets failure is non-fatal
         sheetsWarning = sheetsResult.error;
-        log("sheets_failed_non_fatal", { email: payload.email, error: sheetsResult.error });
+        sheetsDetails = {
+          status: sheetsResult.status,
+          body: sheetsResult.body.slice(0, 500) || null,
+        };
+        log("sheets_failed_non_fatal", {
+          subsystem: "Google Sheets",
+          email: payload.email,
+          error: sheetsResult.error,
+          status: sheetsResult.status,
+          body: sheetsResult.body.slice(0, 500),
+        });
       }
     } else {
+      sheetsWarning = "GOOGLE_SHEETS_WEBAPP_URL not configured — Sheets sync skipped.";
       log("sheets_skipped", { reason: "not_configured" });
     }
 
@@ -277,15 +505,22 @@ async function handleEarlyAccess(request: Request, env: Env): Promise<Response> 
         success: true,
         message: "Early Access request submitted successfully.",
         sheetsSynced,
-        ...(sheetsWarning ? { sheetsWarning } : {}),
+        ...(sheetsWarning ? { sheetsWarning, sheetsDetails } : {}),
       },
       200,
       cors,
     );
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unexpected server error.";
-    log("worker_error", { error: message });
-    return jsonResponse({ success: false, error: message }, 500, cors);
+    const stack = err instanceof Error ? err.stack : undefined;
+    log("worker_exception", { subsystem: "Worker", message, stack });
+    return errorResponse(cors, 500, {
+      success: false,
+      error: message,
+      subsystem: "Worker",
+      status: 500,
+      stack,
+    });
   }
 }
 
@@ -294,7 +529,6 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/early-access" || url.pathname === "/api/early-access") {
-      // API only for non-GET: SPA must still load the marketing page via assets on GET.
       if (request.method === "GET" || request.method === "HEAD") {
         return env.ASSETS.fetch(request);
       }
