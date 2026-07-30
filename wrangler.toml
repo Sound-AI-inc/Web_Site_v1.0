@@ -3,6 +3,10 @@ main = "worker/src/index.ts"
 compatibility_date = "2024-11-01"
 workers_dev = true
 
+# Workers Builds (Git): produce ./dist before wrangler deploy (dist is gitignored).
+[build]
+command = "npm run build"
+
 # API routes run in the Worker BEFORE static assets — fixes POST 405 on /early-access.
 [assets]
 directory = "./dist"
