@@ -26,8 +26,8 @@
 
 | File | Present | Role |
 |------|---------|------|
-| `wrangler.toml` | Yes | Worker entry `main = "worker/src/index.ts"`, assets `directory = "./dist"` |
-| `wrangler.jsonc` | **No** | Not required if `wrangler.toml` is in the **build root** |
+| `wrangler.jsonc` | **Yes** | Primary config for Wrangler 4 CI (`versions upload` / `deploy`) |
+| `wrangler.toml` | Yes | Mirror of jsonc for local tooling |
 | `package.json` | Yes | `build` → `tsc -b && vite build`; `deploy:worker` runs build then deploy |
 | `vite.config.ts` | Yes | Standard Vite; default output **`dist/`** (no custom `outDir`) |
 | `dist/` | Gitignored | Must be produced **during CI build** before `wrangler deploy` |

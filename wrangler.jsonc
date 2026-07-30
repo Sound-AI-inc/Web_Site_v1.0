@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "website",
+  "main": "worker/src/index.ts",
+  "compatibility_date": "2024-11-01",
+  "workers_dev": true,
+  "build": {
+    "command": "npm run build:site"
+  },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/early-access*", "/api/early-access*"]
+  },
+  "vars": {
+    "SUPABASE_URL": "https://xnjugeewwjclgsaynthi.supabase.co",
+    "ALLOWED_ORIGINS": "https://web-site-v1-0.vercel.app,https://website.soundai-inc.workers.dev,http://localhost:5173,http://127.0.0.1:5173"
+  },
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": false
+    }
+  }
+}
