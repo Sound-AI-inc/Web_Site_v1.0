@@ -14,7 +14,7 @@ const faq = [
   },
   {
     q: "Who is SoundAI for?",
-    a: "Producers, composers, sound designers, game audio teams, and creative studios who need export-grade assets — not consumer novelty generators.",
+    a: "Individual creators, indie artists, independent producers, professional producers, creative studios, and enterprise teams who need production-ready assets — not consumer novelty generators.",
   },
   {
     q: "How does Early Access work?",
@@ -28,9 +28,9 @@ const faq = [
 
 export default function Home() {
   usePageMeta({
-    title: "AI music production tools · Modular infrastructure",
+    title: "AI music production tools · Modular infrastructure for creators & studios",
     description:
-      "SoundAI is modular AI music infrastructure for producers and studios. AI sample generation, MIDI generation AI, and production-grade workspace — join Early Access.",
+      "SoundAI is modular AI music infrastructure for creators, producers, studios and enterprise teams. AI sample generation, MIDI generation AI, and production-grade workspace — join Early Access.",
     path: "/",
     jsonLd: {
       "@context": "https://schema.org",
@@ -59,7 +59,7 @@ export default function Home() {
               <span className="gradient-text">music production systems</span>
             </h1>
             <p className="mt-6 max-w-2xl font-codec text-lg leading-relaxed text-text/70 animate-[fadeInUp_0.8s_ease-out]">
-              Generate production-grade audio, MIDI, and presets inside a governed workspace — built for professionals, not novelty demos.
+              Generate and work with production-ready audio, MIDI, and presets — from individual creator workflows to professional studio and enterprise environments.
             </p>
             <div className="mt-10 flex flex-wrap gap-3 animate-[fadeInUp_0.9s_ease-out]">
               <Link to="/early-access" className="btn-primary">

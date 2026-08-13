@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <SoundAILogoLink size="lg" />
             <p className="mt-4 max-w-sm font-codec text-sm leading-relaxed text-text/65">
-              Modular AI music infrastructure for production-grade assets. The future layer of music production systems.
+              Modular AI music infrastructure for creators, producers, studios, and enterprise teams. The future layer of music production systems.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link to="/early-access" className="btn-primary !px-4 !py-2 !text-sm">

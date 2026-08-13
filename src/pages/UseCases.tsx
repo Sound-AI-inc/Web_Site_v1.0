@@ -42,7 +42,7 @@ export default function UseCases() {
           <SectionHeading
             badge="Use Cases"
             title="Practical workflows for modern audio teams"
-            subtitle="Each use case explains how SoundAI fits into existing creative and production processes — not what buttons it has."
+            subtitle="Each use case explains how SoundAI fits into existing creative and production processes for individual creators, producers, studios, and enterprise teams — not what buttons it has."
           />
 
           <div className="space-y-12">
@@ -62,7 +62,7 @@ export default function UseCases() {
           <div className="mt-12 rounded-[28px] border border-accent-cyan/20 bg-accent-cyan/10 p-10 text-center">
             <h2 className="font-poppins text-3xl font-semibold text-dark">Need a custom workflow?</h2>
             <p className="mx-auto mt-4 max-w-2xl text-gray-600 dark:text-light-bg/70">
-              If your team has a unique production pipeline, join the waitlist and tell us your role. We'll prioritize early access for partners building with SoundAI.
+              If your team or organization has a unique production pipeline, join the waitlist and tell us your role. We'll prioritize early access for partners building with SoundAI — from individual creators to enterprise teams.
             </p>
             <Link to="/waitlist" className="btn-secondary mt-8 inline-flex px-8 py-3 text-base">
               Join Waitlist

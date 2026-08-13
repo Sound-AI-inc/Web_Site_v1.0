@@ -7,7 +7,7 @@ export const WORKSPACE_URL =
   "https://web-interface-v1-5-3.vercel.app";
 
 export const SITE_NAME = "SoundAI";
-export const SITE_TAGLINE = "Modular AI music infrastructure for production-grade assets";
+export const SITE_TAGLINE = "Modular AI music infrastructure for creators, producers, studios, and enterprise teams";
 
 export function workspaceAuthUrl(path: "sign-in" | "sign-up" = "sign-in") {
   return `${WORKSPACE_URL}/${path}`;

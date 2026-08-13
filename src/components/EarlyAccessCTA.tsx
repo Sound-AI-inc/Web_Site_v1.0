@@ -8,7 +8,7 @@ interface EarlyAccessCTAProps {
 
 export default function EarlyAccessCTA({
   title = "Join the Early Access list",
-  subtitle = "Be first in line when SoundAI opens production access. One identity across marketing, billing, and workspace.",
+  subtitle = "Be first in line when SoundAI opens production access. One identity across marketing, billing, and workspace for creators, producers, and enterprise teams.",
   className = "",
 }: EarlyAccessCTAProps) {
   return (

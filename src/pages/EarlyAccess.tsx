@@ -4,9 +4,9 @@ import { SITE_NAME, SITE_URL } from "../lib/siteConfig";
 
 export default function EarlyAccess() {
   usePageMeta({
-    title: "Early Access — AI music production infrastructure",
+    title: "Early Access — Modular AI music infrastructure for creators & studios",
     description:
-      "Join the SoundAI Early Access list. One identity across marketing, billing, workspace, and future Stripe subscriptions.",
+      "Join the SoundAI Early Access list. One identity across marketing, billing, workspace, and future subscriptions for creators, producers, and enterprise teams.",
     path: "/early-access",
     jsonLd: {
       "@context": "https://schema.org",

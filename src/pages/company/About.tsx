@@ -5,9 +5,9 @@ import EarlyAccessCTA from "../../components/EarlyAccessCTA";
 
 export default function About() {
   usePageMeta({
-    title: "About & Vision — Modular AI music OS",
+    title: "About & Vision — Modular AI music OS for creators and studios",
     description:
-      "Why SoundAI exists: building the modular AI music operating system for production-grade workflows and AI-assisted creation.",
+      "Why SoundAI exists: building the modular AI music operating system for individual creators, producers, studios, and enterprise teams.",
     path: "/about",
     jsonLd: {
       "@context": "https://schema.org",
@@ -56,7 +56,7 @@ export default function About() {
         <section className="container-max max-w-3xl">
           <h2 className="font-poppins text-2xl font-semibold">Category positioning</h2>
           <p className="mt-4 font-codec leading-relaxed text-text/70">
-            We are not building a consumer AI music toy. SoundAI is infrastructure for professionals — producers, composers, sound designers, and creative studios — who require production-grade outputs and accountable workflows.
+            We are not building a consumer AI music toy. SoundAI is modular AI music infrastructure for creators, producers, composers, sound designers, creative studios, and enterprise teams who require production-grade outputs and accountable workflows.
           </p>
           <Link to="/technology" className="mt-6 inline-block font-poppins text-sm font-medium text-primary hover:underline">
             Explore technology →

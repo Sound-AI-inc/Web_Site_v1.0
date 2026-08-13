@@ -7,7 +7,7 @@ import { SoundAILogoLink } from "./SoundAILogo";
 type OpenMenu = "solutions" | "use-cases" | "resources" | null;
 
 const megaMenus = [
-  { id: "solutions" as const, ...solutionsNav, eyebrow: "Target users", blurb: "Professional workflows by role and studio type." },
+  { id: "solutions" as const, ...solutionsNav, eyebrow: "Solutions", blurb: "From individual creators to professional studios and enterprise teams." },
   { id: "use-cases" as const, ...useCasesNav, eyebrow: "Capabilities", blurb: "What SoundAI generates and orchestrates in production." },
   { id: "resources" as const, ...resourcesNav, eyebrow: "Learn", blurb: "Updates, guides, and community programs." },
 ];

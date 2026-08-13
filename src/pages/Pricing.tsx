@@ -8,9 +8,9 @@ import EarlyAccessCTA from "../components/EarlyAccessCTA";
 
 export default function Pricing() {
   usePageMeta({
-    title: "Billing — Plans, usage and pricing",
+    title: "Billing — Plans for creators, producers and enterprise",
     description:
-      "SoundAI billing: Free Trial, Standard, Premium Flex, and Enterprise plans. Lite and Pro are interface modes. Compare credits, exports, and features.",
+      "SoundAI billing: Free Trial, Standard, Premium Flex, and Enterprise plans. Lite and Pro are interface modes. Compare credits, exports, and features for individuals and teams.",
     path: "/pricing",
     jsonLd: {
       "@context": "https://schema.org",
@@ -34,7 +34,7 @@ export default function Pricing() {
           <h1 className="mt-4 font-poppins text-4xl font-semibold tracking-tight text-text md:text-5xl">Billing</h1>
           <p className="mt-4 font-codec text-lg text-text/70">Plan, usage and invoices</p>
           <p className="mt-2 max-w-2xl font-codec text-sm text-text/55">
-            Lite and Pro are interface modes unlocked by plan — not separate products. Premium Flex unlocks the full Pro interface.
+            Lite and Pro are interface modes unlocked by plan — not separate products. Premium Flex unlocks the full Pro interface for professional creators and producers.
           </p>
         </div>
       </header>

@@ -49,7 +49,7 @@ export const plans: Plan[] = [
     price: "$7",
     cadence: "/one-time",
     description:
-      "Perfect for new creators. Includes 30 credits, advanced audio generation, WAV exports, and basic library access. Credits reload with timed refills after spend events.",
+      "Perfect for new creators and indie artists. Includes 30 credits, advanced audio generation, WAV exports, and basic library access. Credits reload with timed refills after spend events.",
     features: [
       "30 generation credits",
       "Auto-recharge 30 credits after full spend",
@@ -104,7 +104,7 @@ export const plans: Plan[] = [
     price: "Custom",
     cadence: "pricing",
     description:
-      "AI infrastructure for studios, labels, and enterprise partners. Scalable. Secure. Customizable.",
+      "AI infrastructure for creators, producers, studios, labels, and enterprise partners. Scalable. Secure. Customizable.",
     features: [
       "Dedicated AI cluster / private GPU node",
       "Custom model deployment & training",

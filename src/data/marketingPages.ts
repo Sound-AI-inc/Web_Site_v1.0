@@ -45,7 +45,7 @@ function page(
 const defaultSections = (topic: string) => [
   {
     heading: `Why ${topic} teams choose SoundAI`,
-    body: `SoundAI is built as modular AI music infrastructure — not a consumer toy. ${topic} workflows benefit from governed generation, export-grade formats, and a unified workspace that scales from solo creators to studio teams.`,
+    body: `SoundAI is built as modular AI music infrastructure — not a consumer toy. ${topic} workflows benefit from governed generation, export-grade formats, and a unified workspace that scales from individual creators to professional studios and enterprise teams.`,
   },
   {
     heading: "Production-grade outputs",
@@ -67,7 +67,7 @@ export const marketingPages: MarketingPageDef[] = [
     ["film-tv", "AI music tools for film and television", "Cinematic cues and production libraries with export governance."],
     ["content-creators", "AI audio assets for creators", "Channel-ready samples and MIDI with licensing-aware workflows."],
     ["audio-engineers", "AI audio engineering workflows", "Format control, export paths, and integration with professional tooling."],
-    ["creative-studios", "Studio-grade AI music infrastructure", "Team collaboration, asset governance, and scalable generation."],
+    ["creative-studios", "Studio-grade AI music infrastructure", "Team collaboration, asset governance, and scalable generation for professional studios and enterprise."],
   ].map(([slug, h1, lead]) =>
     page("solutions", slug as string, h1 as string, `${lead} Join Early Access.`, lead as string, defaultSections(h1 as string), ["AI music production tools"]),
   ),
