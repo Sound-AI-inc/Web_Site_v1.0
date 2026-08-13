@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
-import { featuresNav, legalFooter, productsFooter, resourcesFooter } from "../data/navigation";
+import { legalFooter, productsFooter, resourcesFooter } from "../data/navigation";
 import { SoundAILogoLink } from "./SoundAILogo";
+
+const companyFooter = [
+  { label: "About", href: "/about" },
+  { label: "Team", href: "/team" },
+  { label: "Roadmap", href: "/roadmap" },
+  { label: "Careers", href: "/careers" },
+];
 
 export default function Footer() {
   return (
@@ -23,7 +30,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-poppins text-xs font-semibold uppercase tracking-wider text-text/45">Products</h3>
+            <h3 className="font-poppins text-xs font-semibold uppercase tracking-wider text-text/45">Product</h3>
             <ul className="mt-4 space-y-2">
               {productsFooter.map((item) => (
                 <li key={item.href}>
@@ -36,9 +43,19 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-poppins text-xs font-semibold uppercase tracking-wider text-text/45">Features</h3>
+            <h3 className="font-poppins text-xs font-semibold uppercase tracking-wider text-text/45">Company</h3>
             <ul className="mt-4 space-y-2">
-              {featuresNav.map((item) => (
+              {companyFooter.map((item) => (
+                <li key={item.href}>
+                  <Link to={item.href} className="font-codec text-sm text-text/70 transition hover:text-primary">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <h3 className="mt-8 font-poppins text-xs font-semibold uppercase tracking-wider text-text/45">Resources</h3>
+            <ul className="mt-4 space-y-2">
+              {resourcesFooter.map((item) => (
                 <li key={item.href}>
                   <Link to={item.href} className="font-codec text-sm text-text/70 transition hover:text-primary">
                     {item.label}
@@ -49,17 +66,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-poppins text-xs font-semibold uppercase tracking-wider text-text/45">Resources</h3>
-            <ul className="mt-4 space-y-2">
-              {resourcesFooter.map((item) => (
-                <li key={item.href}>
-                  <Link to={item.href} className="font-codec text-sm text-text/70 transition hover:text-primary">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <h3 className="mt-8 font-poppins text-xs font-semibold uppercase tracking-wider text-text/45">Legal</h3>
+            <h3 className="font-poppins text-xs font-semibold uppercase tracking-wider text-text/45">Legal</h3>
             <ul className="mt-4 space-y-2">
               {legalFooter.map((item) => (
                 <li key={item.label}>
