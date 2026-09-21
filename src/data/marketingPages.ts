@@ -10,6 +10,7 @@ export interface ProductVisual {
   title: string;
   body: string;
   points: string[];
+  art?: "waveform" | "pianoroll" | "preset" | "library" | "export" | "workspace";
 }
 
 export interface RelatedLink {
@@ -486,6 +487,7 @@ const useCases: MarketingPageDef[] = [
       ],
       visual: {
         label: "Audio pipeline",
+        art: "waveform",
         title: "Prompt → variants → keepers",
         body: "A generation round is a comparison exercise: several takes, one brief, keepers only.",
         points: ["One-shots + percussion", "Textures + atmospheres", "Impacts + transitions", "WAV / MP3 export"],
@@ -533,6 +535,7 @@ const useCases: MarketingPageDef[] = [
       ],
       visual: {
         label: "MIDI pipeline",
+        art: "pianoroll",
         title: "Constraints in, notes out",
         body: "Symbolic output means every parameter of the music stays under your control.",
         points: ["Progressions + harmony", "Melodies + motifs", "Bass + rhythm", "Standard MID export"],
@@ -578,6 +581,7 @@ const useCases: MarketingPageDef[] = [
       ],
       visual: {
         label: "Preset pipeline",
+        art: "preset",
         title: "Timbre brief → direction → your synth",
         body: "Starting points that respect the craft: you always finish the sound.",
         points: ["Bass + lead seeds", "Pad + key beds", "Movement direction", "Finished in your toolchain"],
@@ -621,6 +625,7 @@ const useCases: MarketingPageDef[] = [
       ],
       visual: {
         label: "Library lifecycle",
+        art: "library",
         title: "Generate → preview → keep → export",
         body: "Six stages, one home for every asset you decide to keep.",
         points: ["Preview + favorites", "Project scoping", "Audio / MIDI / presets", "Searchable keepers"],
@@ -658,6 +663,7 @@ const useCases: MarketingPageDef[] = [
       ],
       visual: {
         label: "Workspace concept",
+        art: "workspace",
         title: "One project, full context",
         body: "Prompts, variants, and keepers travel together — no lost files.",
         points: ["Prompt history", "Variant comparison", "Project keepers", "Export handoff"],
@@ -857,6 +863,7 @@ const features: MarketingPageDef[] = [
       ],
       visual: {
         label: "Library concept",
+        art: "library",
         title: "Keepers, not downloads",
         body: "A library that compounds: every project makes the next one faster.",
         points: ["Keepers only", "Prompt context", "Project scope", "Searchable"],
@@ -951,6 +958,7 @@ const features: MarketingPageDef[] = [
       ],
       visual: {
         label: "Workspace concept",
+        art: "workspace",
         title: "Generation + memory + order",
         body: "Prompts, variants, and keepers travel together per project.",
         points: ["Project scope", "Prompt history", "Keepers", "Export handoff"],
@@ -992,6 +1000,7 @@ const features: MarketingPageDef[] = [
       ],
       visual: {
         label: "Export concept",
+        art: "export",
         title: "SoundAI → file → DAW",
         body: "A universal handoff instead of a fragile integration.",
         points: ["WAV + MP3", "Standard MIDI", "Any DAW", "No lock-in"],

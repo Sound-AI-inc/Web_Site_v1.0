@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
 import Breadcrumbs from "../seo/Breadcrumbs";
+import ProductArtVisual, { type ProductArt } from "./ProductVisuals";
 
 export function MarketingHero({
   eyebrow,
@@ -91,11 +92,13 @@ export function ProductSurface({
   title,
   body,
   points,
+  art,
 }: {
   label: string;
   title: string;
   body: string;
   points: string[];
+  art?: ProductArt;
 }) {
   return (
     <div className="m-preview-frame">
@@ -108,6 +111,7 @@ export function ProductSurface({
       <div className="bg-surface p-5 md:p-7">
         <h3 className="font-poppins text-xl font-semibold text-text">{title}</h3>
         <p className="mt-2 max-w-2xl font-codec text-sm leading-relaxed text-text/65">{body}</p>
+        {art && <ProductArtVisual art={art} />}
         <ul className="mt-5 grid gap-2 sm:grid-cols-2">
           {points.map((p) => (
             <li

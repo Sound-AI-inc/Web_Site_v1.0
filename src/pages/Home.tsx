@@ -28,10 +28,10 @@ const outputs = [
 
 const pipeline = [
   ["Prompt", "Describe mood, tempo, key, or timbre in plain words — a brief, not a settings maze."],
-  ["Generate", "SoundAI returns a small set of variants per output family to compare."],
-  ["Edit", "Audition, re-prompt the near-misses, and keep only what earns a place."],
-  ["Export", "WAV, MP3, or standard MIDI files — clean handoff, no lock-in."],
-  ["DAW", "Arrange, process, and mix with the tools you already trust."],
+  ["Generation", "SoundAI returns a small set of variants per output family to compare."],
+  ["Editing", "Audition, re-prompt the near-misses, and keep only what earns a place."],
+  ["Library", "Keepers live project-scoped and searchable — a library that compounds."],
+  ["Export", "WAV, MP3, or standard MIDI files into your DAW — clean handoff, no lock-in."],
 ];
 
 const audiences = [
@@ -44,6 +44,15 @@ const audiences = [
   ["Content Creators", "/solutions/content-creators"],
   ["Audio Engineers", "/solutions/audio-engineers"],
   ["Creative Studios", "/solutions/creative-studios"],
+];
+
+const capabilities = [
+  ["Workspace", "Generation, iteration, and organization per project.", "/features/workspace"],
+  ["Projects", "Every brief gets its own scope.", "/features/projects"],
+  ["Library", "Every keeper, searchable and project-scoped.", "/features/asset-library"],
+  ["Editor", "Refine generated material before export.", "/features/editor-mode"],
+  ["Export", "The bridge from SoundAI to your session.", "/features/export"],
+  ["Integrations", "Designed to fit modern production workflows.", "/features/integrations"],
 ];
 
 const faq = [
@@ -197,6 +206,34 @@ export default function Home() {
                     {label}
                   </span>
                   <ArrowRight className="h-4 w-4 text-text/30 transition group-hover:translate-x-0.5 group-hover:text-primary" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Product capabilities */}
+      <section className="m-section">
+        <div className="container-max">
+          <p className="m-kicker">Product capabilities</p>
+          <h2 className="mt-3 font-poppins text-3xl font-semibold tracking-tight md:text-4xl">
+            Everything around the Generator
+          </h2>
+          <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {capabilities.map(([label, desc, href]) => (
+              <li key={href}>
+                <Link
+                  to={href}
+                  className="group flex items-center justify-between gap-4 rounded-2xl border border-text/8 bg-white/70 px-5 py-4 transition hover:border-primary/30"
+                >
+                  <span>
+                    <span className="block font-poppins text-[15px] font-semibold text-text group-hover:text-primary">
+                      {label}
+                    </span>
+                    <span className="mt-0.5 block font-codec text-[13px] text-text/60">{desc}</span>
+                  </span>
+                  <ArrowRight className="h-4 w-4 shrink-0 text-text/30 transition group-hover:translate-x-0.5 group-hover:text-primary" />
                 </Link>
               </li>
             ))}

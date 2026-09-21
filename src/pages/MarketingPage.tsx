@@ -79,6 +79,7 @@ export default function MarketingPage() {
                   title={page.visual.title}
                   body={page.visual.body}
                   points={page.visual.points}
+                  art={page.visual.art}
                 />
               </div>
             </div>

@@ -91,3 +91,43 @@ export function useTypingPrompt({
 }
 
 export const HERO_PROMPTS = DEFAULT_PROMPTS;
+
+/**
+ * Types a single line once on mount (hero title), then holds stable.
+ * Respects prefers-reduced-motion: renders the full line immediately.
+ */
+export function useTypeOnce(line: string, typeMs = 45) {
+  const [text, setText] = useState(line);
+  const [done, setDone] = useState(true);
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) {
+      setReduced(true);
+      return;
+    }
+    setReduced(false);
+    setText("");
+    setDone(false);
+    let cancelled = false;
+    let i = 0;
+    const timers: number[] = [];
+    const step = () => {
+      i += 1;
+      setText(line.slice(0, i));
+      if (i < line.length) {
+        timers.push(window.setTimeout(() => !cancelled && step(), typeMs + Math.random() * 35));
+      } else {
+        setDone(true);
+      }
+    };
+    timers.push(window.setTimeout(() => !cancelled && step(), 350));
+    return () => {
+      cancelled = true;
+      timers.forEach(clearTimeout);
+    };
+  }, [line, typeMs]);
+
+  return { text, done, reduced };
+}
