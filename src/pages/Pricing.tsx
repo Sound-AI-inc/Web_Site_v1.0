@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { SITE_NAME, SITE_URL } from "../lib/siteConfig";
 import BillingCard from "../components/pricing/BillingCard";
@@ -21,52 +20,29 @@ export default function Pricing() {
     },
   });
 
-  const remaining = 20;
-  const totalCredits = 20;
-  const usedCredits = totalCredits - remaining;
-  const pct = totalCredits > 0 ? (usedCredits / totalCredits) * 100 : 0;
-
   return (
     <article>
       <header className="m-hero-compact">
         <div className="container-max">
           <p className="m-kicker">Billing</p>
-          <h1 className="mt-4 font-poppins text-4xl font-semibold tracking-tight text-text md:text-5xl">Billing</h1>
-          <p className="mt-4 font-codec text-lg text-text/70">Plan, usage and invoices</p>
-          <p className="mt-2 max-w-2xl font-codec text-sm text-text/55">
-            Lite and Pro are interface modes unlocked by plan — not separate products. Premium Flex unlocks the full Pro interface.
+          <h1 className="mt-4 font-poppins text-4xl font-semibold tracking-tight text-text md:text-5xl">Plans and usage</h1>
+          <p className="mt-4 max-w-2xl font-codec text-lg leading-relaxed text-text/70">
+            Plans grant workspace access and generation capacity; credits meter actual
+            generation. Lite and Pro are interface modes unlocked by plan — not separate products.
+          </p>
+          <p className="mt-3 max-w-2xl font-codec text-sm leading-relaxed text-text/55">
+            Billing activates at production launch. Join Early Access for onboarding priority —
+            nothing is charged here today.
           </p>
         </div>
       </header>
 
       <section className="m-section pt-0">
         <div className="container-max pb-10">
-          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="rounded-card border border-text/10 bg-white p-5 shadow-flat-sm">
-              <div className="app-section-title mb-2">Current plan</div>
-              <div className="font-poppins text-xl font-semibold text-text">Standard</div>
-              <p className="app-meta mt-1">Renews on May 14</p>
-              <Link to="/developing-process" className="app-btn-ghost mt-4 inline-flex h-9 w-full items-center justify-center">
-                Manage plan
-              </Link>
-            </div>
-            <div className="rounded-card border border-text/10 bg-white p-5 shadow-flat-sm md:col-span-2">
-              <div className="app-section-title mb-2">Credits this month</div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-poppins text-3xl font-semibold text-text">{remaining}</span>
-                <span className="font-codec text-sm text-text/60">/ {totalCredits} generations</span>
-              </div>
-              <div className="mt-4 h-2 w-full rounded-full bg-surface-muted">
-                <div className="h-2 rounded-full bg-primary" style={{ width: `${pct}%` }} />
-              </div>
-              <p className="app-meta mt-2">Resets on May 14. Upgrade for more headroom.</p>
-            </div>
-          </div>
-
           <h2 className="app-section-title mb-4">Plans</h2>
           <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-2 xl:grid-cols-4">
             {plans.map((p) => (
-              <BillingCard key={p.id} plan={p} current={p.id === "trial"} />
+              <BillingCard key={p.id} plan={p} />
             ))}
           </div>
 
@@ -76,8 +52,8 @@ export default function Pricing() {
       </section>
 
       <EarlyAccessCTA
-        title="Ready to subscribe?"
-        subtitle="Join Early Access for priority onboarding, or sign in to the workspace to manage billing when accounts go live."
+        title="Get notified at launch"
+        subtitle="Join Early Access for priority onboarding when plans and billing go live. One identity across marketing, billing, and workspace."
       />
     </article>
   );
